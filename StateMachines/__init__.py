@@ -15,4 +15,4 @@ __docformat__ = "restructuredtext en"
 
 from sm import *
 from decorator import *
-
+from translator import *
