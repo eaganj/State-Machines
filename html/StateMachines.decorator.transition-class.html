@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>StateMachines.decorator.transition</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="StateMachines-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="StateMachines-module.html">Package&nbsp;StateMachines</a> ::
+        <a href="StateMachines.decorator-module.html">Module&nbsp;decorator</a> ::
+        Class&nbsp;transition
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="StateMachines.decorator.transition-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class transition</h1><span class="codelink"><a href="StateMachines.decorator-pysrc.html#transition">source&nbsp;code</a></span><br /><br />
+<pre class="base-tree">
+   object --+    
+            |    
+<a href="StateMachines.sm.Transition-class.html">sm.Transition</a> --+
+                |
+               <strong class="uidshort">transition</strong>
+</pre>
+
+<hr />
+<p>This decorator class is used to declare the transitions of a state machine.</p>
+<p>For the technically inclined, here is how it works:</p>
+<p>This decorator takes as parameters the event type, additional event matching information, an optional guard and an optional destination state.
+When <tt class="rst-docutils literal"><span class="pre">&#64;transition</span></tt> is evaluated, i.e. when the enclosing state machine is being initialized, the class <a href="StateMachines.decorator.transition-class.html" class="link">transition</a> is instantiated
+and the decorator's arguments passed to its <a href="StateMachines.decorator.transition-class.html#__init__" class="link">__init__</a> method. Then, the new object is called, i.e. its <a href="StateMachines.decorator.transition-class.html#__call__" class="link">__call__</a> function is called.
+(Note that this differs from the <a href="StateMachines.sm.Transition-class.html#state" class="link">state</a> decorator, because <tt class="rst-docutils literal"><span class="pre">&#64;transition</span></tt> takes arguments while <tt class="rst-docutils literal"><span class="pre">&#64;state</span></tt> does not).
+The <a href="StateMachines.decorator.transition-class.html#__call__" class="link">__call__</a> function adds the transition to the list of transitions of its enclosing state.</p>
+<p>We require that any function decorated by <tt class="rst-docutils literal"><span class="pre">&#64;transition</span></tt> be called <tt class="rst-docutils literal"><span class="pre">action</span></tt>.
+This is meant to facilitate programming (inventing transition names is often difficult) and to avoid polluting the namespace.
+We also check that the <tt class="rst-docutils literal"><span class="pre">&#64;transition</span></tt> decorator is used only inside the declaration of a state.</p><br /><br />
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.decorator.transition-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">event_type</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Initialize a transition created by the <tt class="rst-docutils literal"><span class="pre">&#64;transition</span></tt> decorator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.decorator-pysrc.html#transition.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.decorator.transition-class.html#__call__" class="summary-sig-name">__call__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">func</span>)</span><br />
+      Finish creating a transition declared by the <tt class="rst-docutils literal"><span class="pre">&#64;transition</span> <span class="pre">decorator</span></tt>.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.decorator-pysrc.html#transition.__call__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="StateMachines.sm.Transition-class.html">sm.Transition</a></code></b>:
+      <code><a href="StateMachines.sm.Transition-class.html#__str__">__str__</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="StateMachines.sm.Transition-class.html">sm.Transition</a></code></b>:
+      <code><a href="StateMachines.sm.Transition-class.html#action">action</a></code>,
+      <code><a href="StateMachines.sm.Transition-class.html#args">args</a></code>,
+      <code><a href="StateMachines.sm.Transition-class.html#event_type">event_type</a></code>,
+      <code><a href="StateMachines.sm.Transition-class.html#guard">guard</a></code>,
+      <code><a href="StateMachines.sm.Transition-class.html#kwargs">kwargs</a></code>,
+      <code><a href="StateMachines.sm.Transition-class.html#state">state</a></code>,
+      <code><a href="StateMachines.sm.Transition-class.html#to_state">to_state</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">event_type</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.decorator-pysrc.html#transition.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Initialize a transition created by the <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">&#64;transition</span></tt> decorator.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>event_type</code></strong> - The type of the events to be matched.</li>
+        <li><strong class="pname"><code>args</code></strong> - Additional positional arguments for matching events.</li>
+        <li><strong class="pname"><code>kwargs</code></strong> - Keyword arguments for matching events and for specifying the transition (see below).</li>
+        <li><strong class="pname"><code>guard</code></strong> - Optional keyword argument to specify a callable to be called to filter events.</li>
+        <li><strong class="pname"><code>to</code></strong> - Optional keyword argument to specify the name of the destination state (if not specified, the transition loops on its state).</li>
+    </ul></dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'><a href="StateMachines.sm.StateUnknown-class.html">StateUnknown</a></strong></code> - The destination state does not exist or is not a state.</li>
+        <li><code><strong class='fraise'><a href="StateMachines.sm.TransitionBadAction-class.html">TransitionBadAction</a></strong></code> - The transition's action is not callable.</li>
+        <li><code><strong class='fraise'><a href="StateMachines.sm.TransitionBadGuard-class.html">TransitionBadGuard</a></strong></code> - The transition's guard is not callable.</li>
+    </ul></dd>
+    <dt>Overrides:
+      <a href="StateMachines.sm.Transition-class.html#__init__">sm.Transition.__init__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__call__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__call__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">func</span>)</span>
+    <br /><em class="fname">(Call operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.decorator-pysrc.html#transition.__call__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Finish creating a transition declared by the <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">&#64;transition</span> <span class="pre">decorator</span></tt>.</p>
+<p>Check that the function being wrapped is called <tt class="rst-docutils literal"><span class="pre">action</span></tt>, and that it is declared inside the declaration of a state.
+Add the transition objects to the state's list of transitions.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>func</code></strong> - the function being decorated, i.e. the transition action.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="StateMachines-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Wed Dec  5 00:52:19 2007
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>

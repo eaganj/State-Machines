@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>StateMachines.decorator</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="StateMachines-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="StateMachines-module.html">Package&nbsp;StateMachines</a> ::
+        Module&nbsp;decorator
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="StateMachines.decorator-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module decorator</h1><span class="codelink"><a href="StateMachines.decorator-pysrc.html">source&nbsp;code</a></span><br /><br />
+<p>This module extends regular state machines (module <a href="StateMachines.sm-module.html" class="link">sm</a>) with decorators to facilitate the declaration of state machines.</p>
+<p>The module <a href="StateMachines.sm-module.html" class="link">sm</a> requires state machines to be created programatically.
+Because actions can be attached to states and events, the programmer must create separate functions for each action
+and pass them as parameters to the methods <tt class="rst-docutils literal"><span class="pre">add_state</span></tt> and <tt class="rst-docutils literal"><span class="pre">add_transition</span></tt>.
+This results in fairly hairy code and is prone to errors.</p>
+<p>This module provides a class, <a href="StateMachines.decorator.statemachine-class.html" class="link">statemachine</a>, and two decorators, <a href="StateMachines.decorator.state-class.html" class="link">state</a> and <a href="StateMachines.decorator.transition-class.html" class="link">transition</a>, to facilitate the declaration of state machines.</p>
+<p>The syntax for declaring a state machine is as follows:</p>
+<pre class="py-doctest">
+<span class="py-keyword">class</span> <span class="py-defname">MyStateMachine</span>(statemachine):
+        <span class="py-keyword">def</span> <span class="py-defname">__init__</span>(self):
+                super(MyStateMachine, self).__init__()
+
+        <span class="py-comment"># Declaring a state</span>
+        @state
+        <span class="py-keyword">def</span> <span class="py-defname">SomeState</span>(self)
+                <span class="py-comment"># optional function called when entering the state:</span>
+                <span class="py-keyword">def</span> <span class="py-defname">enter</span>():
+<span class="py-more">                        ... </span>body of enter action ...
+
+                <span class="py-comment"># optional function called when leaving the state:</span>
+                <span class="py-keyword">def</span> <span class="py-defname">leave</span>():
+<span class="py-more">                        ... </span>body of leave action ...
+
+                <span class="py-comment"># a simple transition</span>
+                @transition(Press, <span class="py-string">'Button1'</span>, to=self.AnotherState)
+                <span class="py-keyword">def</span> <span class="py-defname">action</span>(event):
+<span class="py-more">                        ... </span>body of transition action ...
+
+                <span class="py-comment"># a transition with a guard:</span>
+                @transition(Button1, guard=<span class="py-keyword">lambda</span> event: ...expression that tests the event..., to=self.AnotherState)
+                <span class="py-keyword">def</span> <span class="py-defname">action</span>(event):
+<span class="py-more">                        ... </span>body of transition action ...
+
+<span class="py-more">                ... </span>more transitions ...
+
+        <span class="py-comment"># another state</span>
+        @state
+        <span class="py-keyword">def</span> <span class="py-defname">AnotherState</span>(self)
+<span class="py-more">                ...</span></pre>
+<p>Each state is a method decorated with <tt class="rst-docutils literal"><span class="pre">&#64;state</span></tt> that contains a set of declarations:</p>
+<blockquote>
+<ul class="rst-simple">
+<li>optional <tt class="rst-docutils literal"><span class="pre">enter</span></tt> and <tt class="rst-docutils literal"><span class="pre">leave</span></tt> functions representing the enter and leave actions of this state;</li>
+<li>transitions that leave this state, declared with the <tt class="rst-docutils literal"><span class="pre">&#64;transition</span></tt> decorator;</li>
+<li>optional declarations, e.g. of variables and functions that can be used by the enter and leave actions and/or by the transitions.</li>
+</ul>
+</blockquote>
+<p>Note that because of Python's scoping rules, the bodies of the functions declared in a state have access to the
+local declarations of the state as well as to the enclosing state machine (through <tt class="rst-docutils literal"><span class="pre">self</span></tt>).</p>
+<p>Each transition is a function that must be called <tt class="rst-docutils literal"><span class="pre">action</span></tt> that takes an event as parameter,
+and that is decorated with the <tt class="rst-docutils literal"><span class="pre">&#64;transition</span></tt> decorator. This decorator takes one or more arguments:</p>
+<blockquote>
+<ul class="rst-simple">
+<li>the first argument must be the event type for this transition (see <a href="StateMachines.sm.Event-class.html" class="link">sm.Event</a>);</li>
+<li>subsequent positional arguments are passed to the <a href="StateMachines.sm.Event-class.html#match" class="link">sm.Event.match</a> method to further filter the event;</li>
+<li>an optinal guard is specified by the <tt class="rst-docutils literal"><span class="pre">guard</span></tt> keyword argument. It must be a callable that takes the event as argument;</li>
+<li>the destination state is specified by the <tt class="rst-docutils literal"><span class="pre">to</span></tt> keyword argument;</li>
+</ul>
+</blockquote>
+<p>Note that the body of a transition has direct access to the local declarations of its enclosing state
+as well as to the enclosing state machine (using <tt class="rst-docutils literal"><span class="pre">self</span></tt>).</p>
+<p>The advantage of this approach is that the bodies of the actions are speficied at the location where the states and transitions are declared.
+Except for the scoping rules, the result of instantiating a state machine in this way is exactly the same as using
+the <a href="StateMachines.sm.StateMachine-class.html#add_state" class="link">sm.StateMachine.add_state</a> and <a href="StateMachines.sm.StateMachine-class.html#add_transition" class="link">sm.StateMachine.add_transition</a> methods.</p>
+<p>Moreover, a state machine declared using the <tt class="rst-docutils literal"><span class="pre">&#64;state</span></tt> and <tt class="rst-docutils literal"><span class="pre">&#64;transition</span></tt> decorators can have
+states and transitions added to it with the <a href="StateMachines.sm.StateMachine-class.html#add_state" class="link">sm.StateMachine.add_state</a> and <a href="StateMachines.sm.StateMachine-class.html#add_transition" class="link">sm.StateMachine.add_transition</a> methods.</p><br /><br />
+
+<!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="StateMachines.decorator.statemachine-class.html" class="summary-name">statemachine</a><br />
+      A state machine that can use the <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">&#64;state</span></tt> and <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">&#64;transition</span></tt> decorators to declare the structure of the machine.
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Decorators</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="StateMachines.decorator.state-class.html" class="summary-name">state</a><br />
+      This decorator class is used to declare the states of a state machine.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="StateMachines.decorator.transition-class.html" class="summary-name">transition</a><br />
+      This decorator class is used to declare the transitions of a state machine.
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Exceptions</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="StateMachines.decorator.TransitionDeclarationError-class.html" class="summary-name">TransitionDeclarationError</a><br />
+      Signals that the <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">&#64;transition</span></tt> decorator must be used within a state declaration.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="StateMachines.decorator.TransitionBadActionName-class.html" class="summary-name">TransitionBadActionName</a><br />
+      Signals that the name of the function defining a transition must be <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">action</span></tt>.
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Functions</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Functions"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.decorator-module.html#_getsomelocals" class="summary-sig-name">_getsomelocals</a>(<span class="summary-sig-arg">function</span>,
+        <span class="summary-sig-arg">keys</span>,
+        <span class="summary-sig-arg">*args</span>)</span><br />
+      Execute a function and return its locals whose names are in keys (private).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.decorator-pysrc.html#_getsomelocals">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.decorator-module.html#_getlocals" class="summary-sig-name">_getlocals</a>(<span class="summary-sig-arg">function</span>,
+        <span class="summary-sig-arg">*args</span>)</span><br />
+      Execute a function and return its locals (private).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.decorator-pysrc.html#_getlocals">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Function Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-FunctionDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="_getsomelocals"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_getsomelocals</span>(<span class="sig-arg">function</span>,
+        <span class="sig-arg">keys</span>,
+        <span class="sig-arg">*args</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.decorator-pysrc.html#_getsomelocals">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Execute a function and return its locals whose names are in keys (private).
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>function</code></strong> - The function from which to extract the locals.</li>
+        <li><strong class="pname"><code>keys</code></strong> - A tuple of names of locals to extract</li>
+        <li><strong class="pname"><code>args</code></strong> - Arguments to be passed to <code class="link">function</code> so as to extract its locals.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>The locals in <code class="link">keys</code> with their values, as a dictionary.</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        Extracting the locals requires executing the function and is fairly inefficient.
+      </p>
+</div></td></tr></table>
+</div>
+<a name="_getlocals"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_getlocals</span>(<span class="sig-arg">function</span>,
+        <span class="sig-arg">*args</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.decorator-pysrc.html#_getlocals">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Execute a function and return its locals (private).
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>function</code></strong> - The function from which to extract the locals.</li>
+        <li><strong class="pname"><code>args</code></strong> - Arguments to be passed to <code class="link">function</code> so as to extract its locals.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>All the locals of <code class="link">function</code> together with their values, as a dictionary.</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        Extracting the locals requires executing the function and is fairly inefficient.
+      </p>
+</div></td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="StateMachines-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Wed Dec  5 00:52:19 2007
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>

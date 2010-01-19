@@ -1,0 +1,879 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>StateMachines.sm.StateMachine</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="StateMachines-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="StateMachines-module.html">Package&nbsp;StateMachines</a> ::
+        <a href="StateMachines.sm-module.html">Module&nbsp;sm</a> ::
+        Class&nbsp;StateMachine
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="StateMachines.sm.StateMachine-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class StateMachine</h1><span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine">source&nbsp;code</a></span><br /><br />
+<pre class="base-tree">
+object --+
+         |
+        <strong class="uidshort">StateMachine</strong>
+</pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+    <a href="StateMachines.decorator.statemachine-class.html">decorator.statemachine</a>
+</dd></dl>
+
+<hr />
+<p>A basic state machine (see <a href="StateMachines.decorator.statemachine-class.html" class="link">decorator.statemachine</a> for the class that supports the <tt class="rst-rst-rst-docutils literal rst-rst-docutils literal rst-docutils literal"><span class="pre">&#64;state</span></tt> and <tt class="rst-rst-rst-docutils literal rst-rst-docutils literal rst-docutils literal"><span class="pre">&#64;transition</span></tt> decorators).</p>
+<p>The instance variables listed below can all be read and written by the application.</p><br /><br />
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.sm.StateMachine-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">active</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">call_actions</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Initialize a new state machine.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.sm.StateMachine-class.html#find_state" class="summary-sig-name">find_state</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name_or_string</span>)</span><br />
+      Return the state object specified by its identifier or its string name.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.find_state">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__str__</code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Editing</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.sm.StateMachine-class.html#add_state" class="summary-sig-name">add_state</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">enter</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">leave</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Create a new state and add it to this state machine.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.add_state">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.sm.StateMachine-class.html#add_transition" class="summary-sig-name">add_transition</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">state</span>,
+        <span class="summary-sig-arg">event_type</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Create a new transition and add it to this state machine.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.add_transition">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Event processing</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.sm.StateMachine-class.html#reset" class="summary-sig-name">reset</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Reset the machine to the initial state.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.reset">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.sm.StateMachine-class.html#suspend" class="summary-sig-name">suspend</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Stop processing events.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.suspend">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.sm.StateMachine-class.html#resume" class="summary-sig-name">resume</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Start processing events.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.resume">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.sm.StateMachine-class.html#process_event" class="summary-sig-name">process_event</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">event</span>)</span><br />
+      Process an event.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.process_event">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Iterators</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="all_states"></a><span class="summary-sig-name">all_states</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return an iterator over the states of this state machine.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.all_states">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="all_transitions"></a><span class="summary-sig-name">all_transitions</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return an iterator over all the transitions of this state machine.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.all_transitions">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.sm.StateMachine-class.html#transitions_from" class="summary-sig-name">transitions_from</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">src_state</span>)</span><br />
+      Return an iterator over the transitions from <tt class="rst-docutils literal"><span class="pre">src_state</span></tt>.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.transitions_from">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.sm.StateMachine-class.html#transitions_to" class="summary-sig-name">transitions_to</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dest_state</span>)</span><br />
+      Return an iterator over the transitions to <tt class="rst-docutils literal"><span class="pre">dest_state</span></tt>.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.transitions_to">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.sm.StateMachine-class.html#transitions_between" class="summary-sig-name">transitions_between</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">src_state</span>,
+        <span class="summary-sig-arg">dest_state</span>)</span><br />
+      Return an iterator over the transitions from <tt class="rst-docutils literal"><span class="pre">src_state</span></tt> to <tt class="rst-docutils literal"><span class="pre">dest_state</span></tt>.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.transitions_between">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="StateMachines.sm.StateMachine-class.html#transitions" class="summary-sig-name">transitions</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">src</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">dest</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Return an iterator over the transitions of the state machine.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.transitions">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="active"></a><span class="summary-name">active</span><br />
+      <tt class="rst-docutils literal"><span class="pre">True</span></tt> if the machine processes events (use <a href="StateMachines.sm.StateMachine-class.html#suspend" class="link">suspend</a> and <a href="StateMachines.sm.StateMachine-class.html#resume" class="link">resume</a> to change the active state).
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="call_actions_on_reset"></a><span class="summary-name">call_actions_on_reset</span><br />
+      if <tt class="rst-docutils literal"><span class="pre">True</span></tt>, resetting the state machine calls the current state's leave action and the starting state's enter action.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="call_actions_on_resume"></a><span class="summary-name">call_actions_on_resume</span><br />
+      if <tt class="rst-docutils literal"><span class="pre">True</span></tt>, resuming the state machine calls the current state's enter action.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="call_actions_on_suspend"></a><span class="summary-name">call_actions_on_suspend</span><br />
+      if <tt class="rst-docutils literal"><span class="pre">True</span></tt>, suspending the state machine calls the current state's leave action.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="current_state"></a><span class="summary-name">current_state</span><br />
+      The current state.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="start_state"></a><span class="summary-name">start_state</span><br />
+      The initial state.
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">active</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">call_actions</span>=<span class="sig-default">False</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Initialize a new state machine.</p>
+<p>After the initialization, the application can set three booleans to control how actions are called:
+In all cases, the field 'active' of the state machine is set to False while the actions are being called,
+giving them a way to distinguish these calls from &quot;normal&quot; calls.
+Initially, all three booleans have the same value as the 'call_actions' parameter.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>active</code></strong> - specifies whether the state machine is immediately processing events.</li>
+        <li><strong class="pname"><code>call_actions</code></strong> - specifies whether to call enter/leave actions when starting/suspending/resuming/resetting the state machine.</li>
+    </ul></dd>
+    <dt>Overrides:
+      object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="transitions_from"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">transitions_from</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">src_state</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.transitions_from">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Return an iterator over the transitions from <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">src_state</span></tt>.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>src_state</code></strong> - The source state (a string or a state object).</li>
+    </ul></dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>StateNotFound</strong></code> - The source state was not found in this state machine.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="transitions_to"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">transitions_to</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">dest_state</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.transitions_to">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Return an iterator over the transitions to <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">dest_state</span></tt>.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>dest_state</code></strong> - The destination state (a string or a state object).</li>
+    </ul></dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>StateNotFound</strong></code> - The destination state was not found in this state machine.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="transitions_between"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">transitions_between</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">src_state</span>,
+        <span class="sig-arg">dest_state</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.transitions_between">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Return an iterator over the transitions from <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">src_state</span></tt> to <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">dest_state</span></tt>.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>src_state</code></strong> - The source state (a string or a state object).</li>
+        <li><strong class="pname"><code>dest_state</code></strong> - The destination state (a string or a state object).</li>
+    </ul></dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>StateNotFound</strong></code> - The source or destination state was not found in this state machine.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="transitions"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">transitions</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">src</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">dest</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.transitions">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Return an iterator over the transitions of the state machine.</p>
+<p>This iterator triggers one of the other transition iterators according to the values of <code class="link">src</code> and <code class="link">dest</code>:</p>
+<blockquote>
+<ul class="rst-simple">
+<li>If <code class="link">src</code> and <code class="link">dest</code> are <tt class="rst-docutils literal"><span class="pre">None</span></tt> or not specified, list all transitions;</li>
+<li>If <code class="link">dest</code> is <tt class="rst-docutils literal"><span class="pre">None</span></tt> or not specified, list transitions that leave <code class="link">src</code>;</li>
+<li>If <code class="link">src</code> is <tt class="rst-docutils literal"><span class="pre">None</span></tt> or not specified, list transitions that arrive at <code class="link">dest</code>;</li>
+<li>If both <code class="link">src</code> and <code class="link">dest</code> are not <tt class="rst-docutils literal"><span class="pre">None</span></tt>, list transitions that go from <code class="link">src</code> to <code class="link">dest</code>.</li>
+</ul>
+</blockquote>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>src</code></strong> - The source state (a string or a state object).</li>
+        <li><strong class="pname"><code>dest</code></strong> - The destination state (a string or a state object).</li>
+    </ul></dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>StateNotFound</strong></code> - The source or destination state was not found in this state machine.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="find_state"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">find_state</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name_or_string</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.find_state">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Return the state object specified by its identifier or its string name.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>name_or_string</code></strong> - Either a state object or the string name of a state.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>The state if it was found, <tt class="rst-docutils literal"><span class="pre">None</span></tt> otherwise.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="add_state"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_state</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">enter</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">leave</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.add_state">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Create a new state and add it to this state machine.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>name</code></strong> - The name of the state (a string).</li>
+        <li><strong class="pname"><code>enter</code></strong> - The enter action, if any (must be callable).</li>
+        <li><strong class="pname"><code>leave</code></strong> - The leave action, if any (must be callable).</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>The newly created state.</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'><a href="StateMachines.sm.StateAlreadyExists-class.html">StateAlreadyExists</a></strong></code> - A state with the same name already exists.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="add_transition"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_transition</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">state</span>,
+        <span class="sig-arg">event_type</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.add_transition">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Create a new transition and add it to this state machine.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>state</code></strong> - The source state of the transition.</li>
+        <li><strong class="pname"><code>event_type</code></strong> - The type of the events to be matched.</li>
+        <li><strong class="pname"><code>args</code></strong> - Additional positional arguments for matching events.</li>
+        <li><strong class="pname"><code>kwargs</code></strong> - Keyword arguments for matching events and for specifying the transition (see below).</li>
+        <li><strong class="pname"><code>guard</code></strong> - Optional keyword argument to specify a callable to be called to filter events.</li>
+        <li><strong class="pname"><code>to</code></strong> - Optional keyword argument to specify the name of the destination state (if not specified, the transition loops on its state).</li>
+        <li><strong class="pname"><code>action</code></strong> - Optional keyword argument to specify a callable invoked when the transition is fired.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>The newly created transition.</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'><a href="StateMachines.sm.StateUnknown-class.html">StateUnknown</a></strong></code> - The destination state does not exist or is not a state.</li>
+        <li><code><strong class='fraise'><a href="StateMachines.sm.TransitionBadAction-class.html">TransitionBadAction</a></strong></code> - The transition's action is not callable.</li>
+        <li><code><strong class='fraise'><a href="StateMachines.sm.TransitionBadGuard-class.html">TransitionBadGuard</a></strong></code> - The transition's guard is not callable.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="reset"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">reset</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.reset">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Reset the machine to the initial state.</p>
+<p>If the state machine is active, the <a href="StateMachines.sm.StateMachine-class.html#call_actions_on_reset" class="link">call_actions_on_reset</a> variable is <tt class="rst-docutils literal"><span class="pre">True</span></tt> and the current state is not the initial state,
+then the current state's leave action and the initial state's enter action, if any, are called.
+During these calls, the <a href="StateMachines.sm.StateMachine-class.html#active" class="link">active</a> variable is set to <tt class="rst-docutils literal"><span class="pre">False</span></tt> so that the actions can distinguish these calls from a 'normal' call.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="suspend"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">suspend</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.suspend">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Stop processing events.</p>
+<p>If the state machine is active and the <a href="StateMachines.sm.StateMachine-class.html#call_actions_on_suspend" class="link">call_actions_on_suspend</a> variable is <tt class="rst-docutils literal"><span class="pre">True</span></tt>,
+then the current state's leave action, if any, is called.
+During that call, the <a href="StateMachines.sm.StateMachine-class.html#active" class="link">active</a> variable is set to <tt class="rst-docutils literal"><span class="pre">False</span></tt> so that the action can distinguish this call from a 'normal' call.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="resume"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">resume</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.resume">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Start processing events.</p>
+<p>If the state machine is not active and the <a href="StateMachines.sm.StateMachine-class.html#call_actions_on_resume" class="link">call_actions_on_resume</a> variable is <tt class="rst-docutils literal"><span class="pre">True</span></tt>,
+then the current state's enter action, if any, is called.
+During that call, the <a href="StateMachines.sm.StateMachine-class.html#active" class="link">active</a> variable is set to <tt class="rst-docutils literal"><span class="pre">False</span></tt> so that the action can distinguish this call from a 'normal' call.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="process_event"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">process_event</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">event</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="StateMachines.sm-pysrc.html#StateMachine.process_event">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Process an event.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>event</code></strong> - The event to process.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd><tt class="rst-docutils literal"><span class="pre">True</span></tt> if the event triggered a transition, <tt class="rst-docutils literal"><span class="pre">False</span></tt> otherwise.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="StateMachines-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Wed Dec  5 00:52:19 2007
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>

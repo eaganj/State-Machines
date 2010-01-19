@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>StateMachines.decorator</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="StateMachines-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="StateMachines-module.html">Package&nbsp;StateMachines</a> ::
+        Module&nbsp;decorator
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="StateMachines.decorator-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="StateMachines.decorator-module.html">Module StateMachines.decorator</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">"""This module extends regular state machines (module `sm`) with decorators to facilitate the declaration of state machines.</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">The module `sm` requires state machines to be created programatically. </tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">Because actions can be attached to states and events, the programmer must create separate functions for each action</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">and pass them as parameters to the methods ``add_state`` and ``add_transition``.</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">This results in fairly hairy code and is prone to errors.</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-docstring">This module provides a class, `statemachine`, and two decorators, `state` and `transition`, to facilitate the declaration of state machines.</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring">The syntax for declaring a state machine is as follows:</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring">.. python::</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-docstring">        class MyStateMachine(statemachine):</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring">                def __init__(self):</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring">                        super(MyStateMachine, self).__init__()</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">                # Declaring a state</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring">                @state</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">                def SomeState(self)</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring">                        # optional function called when entering the state:</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-docstring">                        def enter():</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-docstring">                                ... body of enter action ...</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-docstring">                        # optional function called when leaving the state:</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring">                        def leave():</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring">                                ... body of leave action ...</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-docstring">                        # a simple transition</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-docstring">                        @transition(Press, 'Button1', to=self.AnotherState)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-docstring">                        def action(event):</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring">                                ... body of transition action ...</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-docstring">                        # a transition with a guard:</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-docstring">                        @transition(Button1, guard=lambda event: ...expression that tests the event..., to=self.AnotherState)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring">                        def action(event):</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring">                                ... body of transition action ...</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-docstring">                        ... more transitions ...</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">                # another state</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring">                @state</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">                def AnotherState(self)</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring">                        ...</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring">Each state is a method decorated with ``@state`` that contains a set of declarations:</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">        - optional ``enter`` and ``leave`` functions representing the enter and leave actions of this state;</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">        - transitions that leave this state, declared with the ``@transition`` decorator;</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring">        - optional declarations, e.g. of variables and functions that can be used by the enter and leave actions and/or by the transitions.</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring">Note that because of Python's scoping rules, the bodies of the functions declared in a state have access to the</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-docstring">local declarations of the state as well as to the enclosing state machine (through ``self``).</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-docstring">Each transition is a function that must be called ``action`` that takes an event as parameter,</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-docstring">and that is decorated with the ``@transition`` decorator. This decorator takes one or more arguments:</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-docstring">        - the first argument must be the event type for this transition (see `sm.Event`);</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-docstring">        - subsequent positional arguments are passed to the `sm.Event.match` method to further filter the event;</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-docstring">        - an optinal guard is specified by the ``guard`` keyword argument. It must be a callable that takes the event as argument;</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-docstring">        - the destination state is specified by the ``to`` keyword argument;</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-docstring">Note that the body of a transition has direct access to the local declarations of its enclosing state</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-docstring">as well as to the enclosing state machine (using ``self``).</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-docstring">The advantage of this approach is that the bodies of the actions are speficied at the location where the states and transitions are declared.</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt class="py-docstring">Except for the scoping rules, the result of instantiating a state machine in this way is exactly the same as using </tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-docstring">the `sm.StateMachine.add_state` and `sm.StateMachine.add_transition` methods. </tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"><tt class="py-docstring">Moreover, a state machine declared using the ``@state`` and ``@transition`` decorators can have</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-docstring">states and transitions added to it with the `sm.StateMachine.add_state` and `sm.StateMachine.add_transition` methods. </tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-docstring">:group Decorators: state, transition</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-docstring">:group Exceptions: TransitionDeclarationError, TransitionBadActionName</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"restructuredtext en"</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt><tt class="py-op">,</tt> <tt class="py-name">copy</tt><tt class="py-op">,</tt> <tt class="py-name">inspect</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Module StateMachines.sm=StateMachines.sm-module.html"><a title="StateMachines.sm" class="py-name" href="#" onclick="return doclink('link-0', 'sm', 'link-0');">sm</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Class StateMachines.sm.State=StateMachines.sm.State-class.html"><a title="StateMachines.sm.State" class="py-name" href="#" onclick="return doclink('link-1', 'State', 'link-1');">State</a></tt><tt class="py-op">,</tt> <tt id="link-2" class="py-name" targets="Class StateMachines.sm.Transition=StateMachines.sm.Transition-class.html"><a title="StateMachines.sm.Transition" class="py-name" href="#" onclick="return doclink('link-2', 'Transition', 'link-2');">Transition</a></tt><tt class="py-op">,</tt> <tt id="link-3" class="py-name" targets="Class StateMachines.sm.StateMachine=StateMachines.sm.StateMachine-class.html"><a title="StateMachines.sm.StateMachine" class="py-name" href="#" onclick="return doclink('link-3', 'StateMachine', 'link-3');">StateMachine</a></tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-name">__all__</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">'TransitionDeclarationError'</tt><tt class="py-op">,</tt> <tt class="py-string">'TransitionBadActionName'</tt><tt class="py-op">,</tt> <tt class="py-string">'state'</tt><tt class="py-op">,</tt> <tt class="py-string">'transition'</tt><tt class="py-op">,</tt> <tt class="py-string">'statemachine'</tt><tt class="py-op">]</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-comment"># -------- utilities --------</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-comment"># Functions to find out the locals of a function.</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># Calls the function and uses tracing tools to find out.</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># NOTE : this is both dangerous (the function could have side effects)</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#       and expensive: tracing is costly.</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># Copied from http://wiki.python.org/moin/PythonDecoratorLibrary</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># and modified by [mbl]:</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#       - use depth of original call to test that we're getting info from the right 'return'</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#       - use depth to avoid tracing nested calls (more efficient)</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#       - handle exceptions</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="_getsomelocals"></a><div id="_getsomelocals-def"><a name="L98"></a><tt class="py-lineno"> 98</tt> <a class="py-toggle" href="#" id="_getsomelocals-toggle" onclick="return toggle('_getsomelocals');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="StateMachines.decorator-module.html#_getsomelocals">_getsomelocals</a><tt class="py-op">(</tt><tt class="py-param">function</tt><tt class="py-op">,</tt> <tt class="py-param">keys</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_getsomelocals-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_getsomelocals-expanded"><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt class="py-docstring">"""Execute a function and return its locals whose names are in keys (private).</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-docstring">                - `function`: The function from which to extract the locals.</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-docstring">                - `keys`: A tuple of names of locals to extract</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-docstring">                - `args`: Arguments to be passed to `function` so as to extract its locals.</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-docstring">        :return: The locals in `keys` with their values, as a dictionary.</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring">        :note: Extracting the locals requires executing the function and is fairly inefficient.</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">        <tt class="py-name">func_locals</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">'doc'</tt><tt class="py-op">:</tt><tt class="py-name">function</tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt><tt class="py-op">}</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-keyword">def</tt> <tt class="py-def-name">probeFunc</tt><tt class="py-op">(</tt><tt class="py-param">frame</tt><tt class="py-op">,</tt> <tt class="py-param">event</tt><tt class="py-op">,</tt> <tt class="py-param">arg</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">event</tt> <tt class="py-op">==</tt> <tt class="py-string">'call'</tt> <tt class="py-keyword">and</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">inspect</tt><tt class="py-op">.</tt><tt class="py-name">stack</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-name">depth</tt><tt class="py-op">:</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">                <tt class="py-keyword">elif</tt> <tt class="py-name">event</tt> <tt class="py-op">==</tt> <tt class="py-string">'return'</tt> <tt class="py-keyword">and</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">inspect</tt><tt class="py-op">.</tt><tt class="py-name">stack</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-name">depth</tt><tt class="py-op">:</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">                        <tt class="py-name">locals</tt> <tt class="py-op">=</tt> <tt class="py-name">frame</tt><tt class="py-op">.</tt><tt class="py-name">f_locals</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">                        <tt class="py-name">func_locals</tt><tt class="py-op">.</tt><tt class="py-name">update</tt><tt class="py-op">(</tt><tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">k</tt><tt class="py-op">,</tt><tt class="py-name">locals</tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt class="py-name">k</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">k</tt> <tt class="py-keyword">in</tt> <tt class="py-name">keys</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">                        <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">settrace</tt><tt class="py-op">(</tt><tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">                <tt class="py-keyword">elif</tt> <tt class="py-name">event</tt> <tt class="py-op">==</tt> <tt class="py-string">'exception'</tt> <tt class="py-keyword">or</tt> <tt class="py-name">event</tt> <tt class="py-op">==</tt> <tt class="py-string">'c_exception'</tt><tt class="py-op">:</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">                        <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">settrace</tt><tt class="py-op">(</tt><tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">probeFunc</tt> </tt>
+</div><a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">        <tt class="py-name">depth</tt> <tt class="py-op">=</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">inspect</tt><tt class="py-op">.</tt><tt class="py-name">stack</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">+</tt><tt class="py-number">2</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">settrace</tt><tt class="py-op">(</tt><tt class="py-name">probeFunc</tt><tt class="py-op">)</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">        <tt class="py-name">function</tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">)</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">func_locals</tt> </tt>
+</div><a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"> </tt>
+<a name="_getlocals"></a><div id="_getlocals-def"><a name="L126"></a><tt class="py-lineno">126</tt> <a class="py-toggle" href="#" id="_getlocals-toggle" onclick="return toggle('_getlocals');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="StateMachines.decorator-module.html#_getlocals">_getlocals</a><tt class="py-op">(</tt><tt class="py-param">function</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_getlocals-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_getlocals-expanded"><a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">        <tt class="py-docstring">"""Execute a function and return its locals (private).</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-docstring">                - `function`: The function from which to extract the locals.</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-docstring">                - `args`: Arguments to be passed to `function` so as to extract its locals.</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-docstring">        :return: All the locals of `function` together with their values, as a dictionary.</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-docstring">        :note: Extracting the locals requires executing the function and is fairly inefficient.</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt class="py-name">func_locals</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">'doc'</tt><tt class="py-op">:</tt><tt class="py-name">function</tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt><tt class="py-op">}</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">        <tt class="py-keyword">def</tt> <tt class="py-def-name">probeFunc</tt><tt class="py-op">(</tt><tt class="py-param">frame</tt><tt class="py-op">,</tt> <tt class="py-param">event</tt><tt class="py-op">,</tt> <tt class="py-param">arg</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">event</tt> <tt class="py-op">==</tt> <tt class="py-string">'return'</tt> <tt class="py-keyword">and</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">inspect</tt><tt class="py-op">.</tt><tt class="py-name">stack</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-name">depth</tt><tt class="py-op">:</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">                        <tt class="py-name">func_locals</tt><tt class="py-op">.</tt><tt class="py-name">update</tt><tt class="py-op">(</tt><tt class="py-name">frame</tt><tt class="py-op">.</tt><tt class="py-name">f_locals</tt><tt class="py-op">)</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">                        <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">settrace</tt><tt class="py-op">(</tt><tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">probeFunc</tt> </tt>
+</div><a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">        <tt class="py-name">depth</tt> <tt class="py-op">=</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">inspect</tt><tt class="py-op">.</tt><tt class="py-name">stack</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">+</tt><tt class="py-number">2</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">        <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">settrace</tt><tt class="py-op">(</tt><tt class="py-name">probeFunc</tt><tt class="py-op">)</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">        <tt class="py-name">function</tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">)</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">func_locals</tt> </tt>
+</div><a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-comment"># -------- Error classes --------</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="TransitionDeclarationError"></a><div id="TransitionDeclarationError-def"><a name="L150"></a><tt class="py-lineno">150</tt> <a class="py-toggle" href="#" id="TransitionDeclarationError-toggle" onclick="return toggle('TransitionDeclarationError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="StateMachines.decorator.TransitionDeclarationError-class.html">TransitionDeclarationError</a><tt class="py-op">(</tt><tt class="py-base-class">Exception</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="TransitionDeclarationError-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="TransitionDeclarationError-expanded"><a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">        <tt class="py-docstring">"""Signals that the ``@transition`` decorator must be used within a state declaration."""</tt> </tt>
+</div><a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"> </tt>
+<a name="TransitionBadActionName"></a><div id="TransitionBadActionName-def"><a name="L153"></a><tt class="py-lineno">153</tt> <a class="py-toggle" href="#" id="TransitionBadActionName-toggle" onclick="return toggle('TransitionBadActionName');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="StateMachines.decorator.TransitionBadActionName-class.html">TransitionBadActionName</a><tt class="py-op">(</tt><tt class="py-base-class">Exception</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="TransitionBadActionName-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="TransitionBadActionName-expanded"><a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">        <tt class="py-docstring">"""Signals that the name of the function defining a transition must be ``action``."""</tt> </tt>
+</div><a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"><tt class="py-comment"># -------- decorators to declare states and transitions --------</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-comment"></tt>         </tt>
+<a name="state"></a><div id="state-def"><a name="L158"></a><tt class="py-lineno">158</tt> <a class="py-toggle" href="#" id="state-toggle" onclick="return toggle('state');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="StateMachines.decorator.state-class.html">state</a><tt class="py-op">(</tt><tt class="py-base-class">State</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="state-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="state-expanded"><a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">        <tt class="py-docstring">"""This decorator class is used to declare the states of a state machine.</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"><tt class="py-docstring">        For the technically inclined, here is how it works:</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"><tt class="py-docstring">        When ``@state`` decorates a function ``s`` in the body of a `statemachine`, the class `state` is instantiated and </tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"><tt class="py-docstring">        the new state object is stored in the variable ``s``.</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"><tt class="py-docstring">        When the state machine is initialized (`statemachine.__init__`), it looks up its class attributes that derive from `state`.</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line"><tt class="py-docstring">        It calls each such attribute, i.e. it invokes the `__call__` function of the state object created by the decorator.</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"><tt class="py-docstring">        This `__call__` function, in turn, calls the function that was decorated, i.e. the function following the ``@state`` line.</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt class="py-docstring">        This function is supposed to define the enter/leave functions for the state and the transitions, declared using the ``@transition`` decorator.</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"><tt class="py-docstring">        The ``@transition`` decorator creates transition objects and stores them in the ``transitions`` variable of the state.</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"><tt class="py-docstring">        Finally, the `__call__` function retreives and stores these enter and leave actions, if any.</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">        <tt class="py-decorator">@</tt><tt class="py-decorator">classmethod</tt> </tt>
+<a name="state.uid"></a><div id="state.uid-def"><a name="L174"></a><tt class="py-lineno">174</tt> <a class="py-toggle" href="#" id="state.uid-toggle" onclick="return toggle('state.uid');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="StateMachines.decorator.state-class.html#uid">uid</a><tt class="py-op">(</tt><tt class="py-param">cls</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="state.uid-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="state.uid-expanded"><a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">                <tt class="py-docstring">"""Return a unique, monotonically increasing id. </tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line"><tt class="py-docstring">                Used to find the first state declared in a state machine.</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line"><tt class="py-docstring">                """</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">                        <tt class="py-name">cls</tt><tt class="py-op">.</tt><tt class="py-name">nextuid</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt><tt class="py-op">:</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">                        <tt class="py-name">cls</tt><tt class="py-op">.</tt><tt class="py-name">nextuid</tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">cls</tt><tt class="py-op">.</tt><tt class="py-name">nextuid</tt> </tt>
+</div><a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line">        <tt class="py-comment"># This is called when @state is encountered, i.e. when a state machine class is declared</tt> </tt>
+<a name="state.__init__"></a><div id="state.__init__-def"><a name="L186"></a><tt class="py-lineno">186</tt> <a class="py-toggle" href="#" id="state.__init__-toggle" onclick="return toggle('state.__init__');">-</a><tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-keyword">def</tt> <a class="py-def-name" href="StateMachines.decorator.state-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">func</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="state.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="state.__init__-expanded"><a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">                <tt class="py-docstring">"""Initialize a state created by the ``@state`` decorator.</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-docstring">                :param func: The function defining the state.</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"><tt class="py-docstring">                """</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">__debug__</tt><tt class="py-op">:</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">                        <tt class="py-keyword">print</tt> <tt class="py-string">"Declaring state"</tt><tt class="py-op">,</tt> <tt class="py-name">func</tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">                <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-4" class="py-name" targets="Class StateMachines.decorator.state=StateMachines.decorator.state-class.html"><a title="StateMachines.decorator.state" class="py-name" href="#" onclick="return doclink('link-4', 'state', 'link-4');">state</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method StateMachines.decorator.state.__init__()=StateMachines.decorator.state-class.html#__init__,Method StateMachines.decorator.statemachine.__init__()=StateMachines.decorator.statemachine-class.html#__init__,Method StateMachines.decorator.transition.__init__()=StateMachines.decorator.transition-class.html#__init__,Method StateMachines.sm.Event.__init__()=StateMachines.sm.Event-class.html#__init__,Method StateMachines.sm.State.__init__()=StateMachines.sm.State-class.html#__init__,Method StateMachines.sm.StateMachine.__init__()=StateMachines.sm.StateMachine-class.html#__init__,Method StateMachines.sm.Transition.__init__()=StateMachines.sm.Transition-class.html#__init__"><a title="StateMachines.decorator.state.__init__
+StateMachines.decorator.statemachine.__init__
+StateMachines.decorator.transition.__init__
+StateMachines.sm.Event.__init__
+StateMachines.sm.State.__init__
+StateMachines.sm.StateMachine.__init__
+StateMachines.sm.Transition.__init__" class="py-name" href="#" onclick="return doclink('link-5', '__init__', 'link-5');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt><tt class="py-op">)</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line">                <tt class="py-comment">#self.__dict__ = func.__dict__  # this is a bit extreme I think...</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line"><tt class="py-comment"></tt>                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt> <tt class="py-op">=</tt> <tt class="py-name">func</tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt> <tt class="py-op">=</tt> <tt class="py-name">func</tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">func</tt> <tt class="py-op">=</tt> <tt class="py-name">func</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Class Method StateMachines.decorator.state.uid()=StateMachines.decorator.state-class.html#uid"><a title="StateMachines.decorator.state.uid" class="py-name" href="#" onclick="return doclink('link-6', 'uid', 'link-6');">uid</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name"><a title="StateMachines.decorator.state.uid" class="py-name" href="#" onclick="return doclink('link-7', 'uid', 'link-6');">uid</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line"> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">        <tt class="py-comment"># This is called when the state is called, when initializing a state machine, i.e. when a state machine is instantiated.</tt> </tt>
+<a name="state.__call__"></a><div id="state.__call__-def"><a name="L201"></a><tt class="py-lineno">201</tt> <a class="py-toggle" href="#" id="state.__call__-toggle" onclick="return toggle('state.__call__');">-</a><tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-keyword">def</tt> <a class="py-def-name" href="StateMachines.decorator.state-class.html#__call__">__call__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">state_machine</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="state.__call__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="state.__call__-expanded"><a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line">                <tt class="py-docstring">"""The wrapper function of the state decorator.</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line"><tt class="py-docstring">                Calls the original state function and extracts its enter/leave actions, if any.</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line"><tt class="py-docstring">                """</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">__debug__</tt><tt class="py-op">:</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line">                        <tt class="py-keyword">print</tt> <tt class="py-string">"Initializing"</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line"> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">                <tt class="py-comment"># call the state function that was decorated and extract the enter/leave functions that it declares, if any.</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line"><tt class="py-comment"></tt>                <tt class="py-name">func_locals</tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name" targets="Function StateMachines.decorator._getsomelocals()=StateMachines.decorator-module.html#_getsomelocals"><a title="StateMachines.decorator._getsomelocals" class="py-name" href="#" onclick="return doclink('link-8', '_getsomelocals', 'link-8');">_getsomelocals</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">func</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-string">'enter'</tt><tt class="py-op">,</tt> <tt class="py-string">'leave'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">state_machine</tt><tt class="py-op">)</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Method StateMachines.sm.State.enter()=StateMachines.sm.State-class.html#enter"><a title="StateMachines.sm.State.enter" class="py-name" href="#" onclick="return doclink('link-9', 'enter', 'link-9');">enter</a></tt> <tt class="py-op">=</tt> <tt class="py-name">func_locals</tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt class="py-string">'enter'</tt><tt class="py-op">)</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name"><a title="StateMachines.sm.State.enter" class="py-name" href="#" onclick="return doclink('link-10', 'enter', 'link-9');">enter</a></tt> <tt class="py-keyword">and</tt> <tt class="py-keyword">not</tt> <tt class="py-name">callable</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name"><a title="StateMachines.sm.State.enter" class="py-name" href="#" onclick="return doclink('link-11', 'enter', 'link-9');">enter</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="StateMachines.sm.State.enter" class="py-name" href="#" onclick="return doclink('link-12', 'enter', 'link-9');">enter</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line"> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Method StateMachines.sm.State.leave()=StateMachines.sm.State-class.html#leave"><a title="StateMachines.sm.State.leave" class="py-name" href="#" onclick="return doclink('link-13', 'leave', 'link-13');">leave</a></tt> <tt class="py-op">=</tt> <tt class="py-name">func_locals</tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt class="py-string">'leave'</tt><tt class="py-op">)</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name"><a title="StateMachines.sm.State.leave" class="py-name" href="#" onclick="return doclink('link-14', 'leave', 'link-13');">leave</a></tt> <tt class="py-keyword">and</tt> <tt class="py-keyword">not</tt> <tt class="py-name">callable</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name"><a title="StateMachines.sm.State.leave" class="py-name" href="#" onclick="return doclink('link-15', 'leave', 'link-13');">leave</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name"><a title="StateMachines.sm.State.leave" class="py-name" href="#" onclick="return doclink('link-16', 'leave', 'link-13');">leave</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+</div></div><a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line"> </tt>
+<a name="transition"></a><div id="transition-def"><a name="L220"></a><tt class="py-lineno">220</tt> <a class="py-toggle" href="#" id="transition-toggle" onclick="return toggle('transition');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="StateMachines.decorator.transition-class.html">transition</a><tt class="py-op">(</tt><tt class="py-base-class">Transition</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="transition-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="transition-expanded"><a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">        <tt class="py-docstring">"""This decorator class is used to declare the transitions of a state machine.</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line"><tt class="py-docstring">        For the technically inclined, here is how it works:</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line"><tt class="py-docstring">        This decorator takes as parameters the event type, additional event matching information, an optional guard and an optional destination state.</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line"><tt class="py-docstring">        When ``@transition`` is evaluated, i.e. when the enclosing state machine is being initialized, the class `transition` is instantiated</tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line"><tt class="py-docstring">        and the decorator's arguments passed to its `__init__` method. Then, the new object is called, i.e. its `__call__` function is called.</tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line"><tt class="py-docstring">        (Note that this differs from the `state` decorator, because ``@transition`` takes arguments while ``@state`` does not).</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line"><tt class="py-docstring">        The `__call__` function adds the transition to the list of transitions of its enclosing state.</tt> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line"><tt class="py-docstring">        We require that any function decorated by ``@transition`` be called ``action``. </tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line"><tt class="py-docstring">        This is meant to facilitate programming (inventing transition names is often difficult) and to avoid polluting the namespace. </tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"><tt class="py-docstring">        We also check that the ``@transition`` decorator is used only inside the declaration of a state.</tt> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line"> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">        <tt class="py-comment"># This is called when @transition is encountered, i.e. when a state machine is initialized</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-comment"># (The state machine calls each state in turn, and each state function contains its transitions)</tt> </tt>
+<a name="transition.__init__"></a><div id="transition.__init__-def"><a name="L238"></a><tt class="py-lineno">238</tt> <a class="py-toggle" href="#" id="transition.__init__-toggle" onclick="return toggle('transition.__init__');">-</a><tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-keyword">def</tt> <a class="py-def-name" href="StateMachines.decorator.transition-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">event_type</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="transition.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="transition.__init__-expanded"><a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">                <tt class="py-docstring">"""Initialize a transition created by the ``@transition`` decorator.</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line"><tt class="py-docstring">                :Parameters:</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line"><tt class="py-docstring">                        - `event_type`: The type of the events to be matched.</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line"><tt class="py-docstring">                        - `args`: Additional positional arguments for matching events.</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line"><tt class="py-docstring">                        - `kwargs`: Keyword arguments for matching events and for specifying the transition (see below).</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line"><tt class="py-docstring">                :Keywords:</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line"><tt class="py-docstring">                        - `guard`: Optional keyword argument to specify a callable to be called to filter events.</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line"><tt class="py-docstring">                        - `to`: Optional keyword argument to specify the name of the destination state (if not specified, the transition loops on its state).</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line"><tt class="py-docstring">                :Exceptions:</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line"><tt class="py-docstring">                        - `StateUnknown`: The destination state does not exist or is not a state.</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line"><tt class="py-docstring">                        - `TransitionBadAction`: The transition's action is not callable.</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line"><tt class="py-docstring">                        - `TransitionBadGuard`: The transition's guard is not callable.</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line"><tt class="py-docstring">                """</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">                <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-17" class="py-name" targets="Class StateMachines.decorator.transition=StateMachines.decorator.transition-class.html"><a title="StateMachines.decorator.transition" class="py-name" href="#" onclick="return doclink('link-17', 'transition', 'link-17');">transition</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="StateMachines.decorator.state.__init__
+StateMachines.decorator.statemachine.__init__
+StateMachines.decorator.transition.__init__
+StateMachines.sm.Event.__init__
+StateMachines.sm.State.__init__
+StateMachines.sm.StateMachine.__init__
+StateMachines.sm.Transition.__init__" class="py-name" href="#" onclick="return doclink('link-18', '__init__', 'link-5');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">event_type</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line"> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">        <tt class="py-comment"># This is called right after the initialization above and must return the wrapped function.</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-comment"># Since all transition functions are called 'action', we us a single wrapper for all transitions.</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-comment"># The wrapper stores the transitions as a list in its 'transitions' attribute.</tt> </tt>
+<a name="transition.__call__"></a><div id="transition.__call__-def"><a name="L260"></a><tt class="py-lineno">260</tt> <a class="py-toggle" href="#" id="transition.__call__-toggle" onclick="return toggle('transition.__call__');">-</a><tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-keyword">def</tt> <a class="py-def-name" href="StateMachines.decorator.transition-class.html#__call__">__call__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">func</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="transition.__call__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="transition.__call__-expanded"><a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">                <tt class="py-docstring">"""Finish creating a transition declared by the ``@transition decorator``.</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line"><tt class="py-docstring">                Check that the function being wrapped is called ``action``, and that it is declared inside the declaration of a state.</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line"><tt class="py-docstring">                Add the transition objects to the state's list of transitions.</tt> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line"><tt class="py-docstring">                :param func: the function being decorated, i.e. the transition action.</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line"><tt class="py-docstring">                """</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">__debug__</tt><tt class="py-op">:</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line">                        <tt class="py-keyword">print</tt> <tt class="py-string">"  Declaring"</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line"> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line">                <tt class="py-comment"># func must be called 'action': </tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line"><tt class="py-comment"></tt>                <tt class="py-keyword">if</tt> <tt class="py-name">func</tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt> <tt class="py-op">!=</tt> <tt class="py-string">'action'</tt><tt class="py-op">:</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line">                        <tt class="py-keyword">raise</tt> <tt id="link-19" class="py-name" targets="Class StateMachines.decorator.TransitionBadActionName=StateMachines.decorator.TransitionBadActionName-class.html"><a title="StateMachines.decorator.TransitionBadActionName" class="py-name" href="#" onclick="return doclink('link-19', 'TransitionBadActionName', 'link-19');">TransitionBadActionName</a></tt><tt class="py-op">,</tt> <tt class="py-string">"The function '%s' declared with the @transition decorator must be called 'action'."</tt> <tt class="py-op">%</tt> <tt class="py-name">func</tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line"> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">action</tt> <tt class="py-op">=</tt> <tt class="py-name">func</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line"> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line">                <tt class="py-comment"># we're supposed to be called by the state decorator function, which calls '_getsomelocals'</tt> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line"><tt class="py-comment"></tt>                <tt class="py-comment"># This is why we go up 3 levels in the call stack to find the state we belong to.</tt> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line"><tt class="py-comment"></tt>                <tt class="py-name">locals</tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">_getframe</tt><tt class="py-op">(</tt><tt class="py-number">3</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">f_locals</tt> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line">                <tt class="py-name">my_state</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">locals</tt><tt class="py-op">:</tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">                        <tt class="py-name">my_state</tt> <tt class="py-op">=</tt> <tt class="py-name">locals</tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt class="py-string">'self'</tt><tt class="py-op">)</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">locals</tt> <tt class="py-keyword">or</tt> <tt class="py-keyword">not</tt> <tt class="py-name">my_state</tt> <tt class="py-keyword">or</tt> <tt class="py-keyword">not</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">my_state</tt><tt class="py-op">,</tt> <tt id="link-20" class="py-name"><a title="StateMachines.decorator.state" class="py-name" href="#" onclick="return doclink('link-20', 'state', 'link-4');">state</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">                        <tt class="py-keyword">raise</tt> <tt id="link-21" class="py-name" targets="Class StateMachines.decorator.TransitionDeclarationError=StateMachines.decorator.TransitionDeclarationError-class.html"><a title="StateMachines.decorator.TransitionDeclarationError" class="py-name" href="#" onclick="return doclink('link-21', 'TransitionDeclarationError', 'link-21');">TransitionDeclarationError</a></tt><tt class="py-op">,</tt> <tt class="py-string">"A transition must be declared within a state"</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line">                <tt class="py-name">my_state</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method StateMachines.sm.StateMachine.transitions()=StateMachines.sm.StateMachine-class.html#transitions"><a title="StateMachines.sm.StateMachine.transitions" class="py-name" href="#" onclick="return doclink('link-22', 'transitions', 'link-22');">transitions</a></tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line"> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">func</tt> </tt>
+</div></div><a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line"> </tt>
+<a name="statemachine"></a><div id="statemachine-def"><a name="L289"></a><tt class="py-lineno">289</tt> <a class="py-toggle" href="#" id="statemachine-toggle" onclick="return toggle('statemachine');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="StateMachines.decorator.statemachine-class.html">statemachine</a><tt class="py-op">(</tt><tt class="py-base-class">StateMachine</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="statemachine-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="statemachine-expanded"><a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line">        <tt class="py-docstring">"""A state machine that can use the ``@state`` and ``@transition`` decorators to declare the structure of the machine.</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line"><tt class="py-docstring">        Like regular state machines, additional states and transitions can be added with the `sm.StateMachine.add_state` and `sm.StateMachine.add_transition` methods.</tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line">         </tt>
+<a name="statemachine.__init__"></a><div id="statemachine.__init__-def"><a name="L295"></a><tt class="py-lineno">295</tt> <a class="py-toggle" href="#" id="statemachine.__init__-toggle" onclick="return toggle('statemachine.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="StateMachines.decorator.statemachine-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">active</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-param">call_actions</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="statemachine.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="statemachine.__init__-expanded"><a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line">                <tt class="py-docstring">"""Initialize a new state machine.</tt> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line"><tt class="py-docstring">                :Parameters:</tt> </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line"><tt class="py-docstring">                        - `active`: specifies whether the state machine is immediately processing events.</tt> </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line"><tt class="py-docstring">                        - `call_actions`: specifies whether to call enter/leave actions when starting/suspending/resuming/resetting the state machine.</tt> </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line"><tt class="py-docstring">                """</tt> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line">                <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-23" class="py-name" targets="Class StateMachines.decorator.statemachine=StateMachines.decorator.statemachine-class.html"><a title="StateMachines.decorator.statemachine" class="py-name" href="#" onclick="return doclink('link-23', 'statemachine', 'link-23');">statemachine</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="StateMachines.decorator.state.__init__
+StateMachines.decorator.statemachine.__init__
+StateMachines.decorator.transition.__init__
+StateMachines.sm.Event.__init__
+StateMachines.sm.State.__init__
+StateMachines.sm.StateMachine.__init__
+StateMachines.sm.Transition.__init__" class="py-name" href="#" onclick="return doclink('link-24', '__init__', 'link-5');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">active</tt><tt class="py-op">,</tt> <tt class="py-name">call_actions</tt><tt class="py-op">)</tt> </tt>
+<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line">                 </tt>
+<a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line">                <tt class="py-comment"># go through the declared states and call them.</tt> </tt>
+<a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line"><tt class="py-comment"></tt>                <tt class="py-comment"># this will call state.__call__ which will initialize the state.</tt> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line"><tt class="py-comment"></tt>                <tt class="py-comment"># also initialize start_state (and current_state) with the lowest numbered state</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line"><tt class="py-comment"></tt>                <tt class="py-name">start_id</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">my_name</tt><tt class="py-op">,</tt> <tt class="py-name">my_state</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__class__</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">.</tt><tt class="py-name">items</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">my_state</tt><tt class="py-op">,</tt> <tt id="link-25" class="py-name"><a title="StateMachines.decorator.state" class="py-name" href="#" onclick="return doclink('link-25', 'state', 'link-4');">state</a></tt><tt class="py-op">)</tt> <tt class="py-keyword">and</tt> <tt class="py-name">callable</tt><tt class="py-op">(</tt><tt class="py-name">my_state</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">                                <tt class="py-comment"># we make a copy of the state otherwise it would be shared among instances of the state machine class.</tt> </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line"><tt class="py-comment"></tt>                                <tt class="py-comment"># we keep a link from the copy to the original so that find_state can return the copy when given the id of the original.</tt> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line"><tt class="py-comment"></tt>                                <tt class="py-name">original</tt> <tt class="py-op">=</tt> <tt class="py-name">my_state</tt> </tt>
+<a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line">                                <tt class="py-name">my_state</tt> <tt class="py-op">=</tt> <tt class="py-name">copy</tt><tt class="py-op">.</tt><tt class="py-name">deepcopy</tt><tt class="py-op">(</tt><tt class="py-name">original</tt><tt class="py-op">)</tt> </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line">                                <tt class="py-name">my_state</tt><tt class="py-op">.</tt><tt class="py-name">original</tt> <tt class="py-op">=</tt> <tt class="py-name">original</tt> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line">                                <tt class="py-name">my_state</tt><tt class="py-op">.</tt><tt class="py-name">state_machine</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line">                                 </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">                                <tt class="py-comment"># call the state, which will declare the enter/leave actions and the transitions</tt> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line"><tt class="py-comment"></tt>                                <tt class="py-name">my_state</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">                                 </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line">                                <tt class="py-comment"># add it to the list of states</tt> </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line"><tt class="py-comment"></tt>                                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">states</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">my_state</tt><tt class="py-op">)</tt> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line">                                 </tt>
+<a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line">                                <tt class="py-comment"># make it the start state if needed</tt> </tt>
+<a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line"><tt class="py-comment"></tt>                                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">start_state</tt> <tt class="py-keyword">or</tt> <tt id="link-26" class="py-name"><a title="StateMachines.decorator.state" class="py-name" href="#" onclick="return doclink('link-26', 'state', 'link-4');">state</a></tt><tt class="py-op">.</tt><tt id="link-27" class="py-name"><a title="StateMachines.decorator.state.uid" class="py-name" href="#" onclick="return doclink('link-27', 'uid', 'link-6');">uid</a></tt> <tt class="py-op">&lt;</tt> <tt class="py-name">start_id</tt><tt class="py-op">:</tt> </tt>
+<a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line">                                        <tt class="py-name">start_id</tt> <tt class="py-op">=</tt> <tt id="link-28" class="py-name"><a title="StateMachines.decorator.state" class="py-name" href="#" onclick="return doclink('link-28', 'state', 'link-4');">state</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="StateMachines.decorator.state.uid" class="py-name" href="#" onclick="return doclink('link-29', 'uid', 'link-6');">uid</a></tt> </tt>
+<a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line">                                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">start_state</tt> <tt class="py-op">=</tt> <tt class="py-name">my_state</tt> </tt>
+<a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line">                 </tt>
+<a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line">                <tt class="py-comment"># now fix the destination states of the transitions so they point to the copies instead of the originals:</tt> </tt>
+<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line"><tt class="py-comment"></tt>                <tt class="py-keyword">for</tt> <tt class="py-name">my_state</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">states</tt><tt class="py-op">:</tt> </tt>
+<a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line">                        <tt class="py-keyword">for</tt> <tt id="link-30" class="py-name"><a title="StateMachines.decorator.transition" class="py-name" href="#" onclick="return doclink('link-30', 'transition', 'link-17');">transition</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">my_state</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="StateMachines.sm.StateMachine.transitions" class="py-name" href="#" onclick="return doclink('link-31', 'transitions', 'link-22');">transitions</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L331"></a><tt class="py-lineno">331</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt id="link-32" class="py-name"><a title="StateMachines.decorator.transition" class="py-name" href="#" onclick="return doclink('link-32', 'transition', 'link-17');">transition</a></tt><tt class="py-op">.</tt><tt class="py-name">to_state</tt><tt class="py-op">:</tt> </tt>
+<a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line">                                        <tt id="link-33" class="py-name"><a title="StateMachines.decorator.transition" class="py-name" href="#" onclick="return doclink('link-33', 'transition', 'link-17');">transition</a></tt><tt class="py-op">.</tt><tt class="py-name">to_state</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name" targets="Method StateMachines.sm.StateMachine.find_state()=StateMachines.sm.StateMachine-class.html#find_state"><a title="StateMachines.sm.StateMachine.find_state" class="py-name" href="#" onclick="return doclink('link-34', 'find_state', 'link-34');">find_state</a></tt><tt class="py-op">(</tt><tt id="link-35" class="py-name"><a title="StateMachines.decorator.transition" class="py-name" href="#" onclick="return doclink('link-35', 'transition', 'link-17');">transition</a></tt><tt class="py-op">.</tt><tt class="py-name">to_state</tt><tt class="py-op">)</tt> </tt>
+<a name="L333"></a><tt class="py-lineno">333</tt>  <tt class="py-line">                 </tt>
+<a name="L334"></a><tt class="py-lineno">334</tt>  <tt class="py-line">                <tt class="py-comment"># set initial state</tt> </tt>
+<a name="L335"></a><tt class="py-lineno">335</tt>  <tt class="py-line"><tt class="py-comment"></tt>                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">current_state</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">start_state</tt> </tt>
+<a name="L336"></a><tt class="py-lineno">336</tt>  <tt class="py-line">                 </tt>
+<a name="L337"></a><tt class="py-lineno">337</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">active</tt> <tt class="py-keyword">and</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">call_actions_from_reset</tt><tt class="py-op">:</tt> </tt>
+<a name="L338"></a><tt class="py-lineno">338</tt>  <tt class="py-line">                        <tt class="py-comment"># temporarily setting active to False allows the enter action to distinguish from normal calls</tt> </tt>
+<a name="L339"></a><tt class="py-lineno">339</tt>  <tt class="py-line"><tt class="py-comment"></tt>                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">active</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L340"></a><tt class="py-lineno">340</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">current_state</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="StateMachines.sm.State.enter" class="py-name" href="#" onclick="return doclink('link-36', 'enter', 'link-9');">enter</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L341"></a><tt class="py-lineno">341</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">active</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+</div></div><a name="L342"></a><tt class="py-lineno">342</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="StateMachines-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Wed Dec  5 00:52:19 2007
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>

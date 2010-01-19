@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>StateMachine.sm</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="StateMachine-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="StateMachine-module.html">Package&nbsp;StateMachine</a> ::
+        Module&nbsp;sm
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="StateMachine.sm-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module sm</h1><span class="codelink"><a href="StateMachine.sm-pysrc.html">source&nbsp;code</a></span><br /><br />
+<p>This module implements state machines for event-driven programming.</p>
+<p>This module provides the class <a href="StateMachine.sm.StateMachine-class.html" class="link">StateMachine</a> and the class <a href="StateMachine.sm.Event-class.html" class="link">Event</a>.
+It also provides the classes <a href="StateMachine.sm.State-class.html" class="link">State</a> and <a href="StateMachine.sm.Transition-class.html" class="link">Transition</a>, although these are not normally used directly by applications.
+A companion module, <a href="StateMachine.decorator-module.html" class="link">decorator</a>, provides two decorators, <tt class="rst-docutils literal"><span class="pre">&#64;state</span></tt> and <tt class="rst-docutils literal"><span class="pre">&#64;transition</span></tt> that simplify the
+definition of state machines.</p>
+<p>State machines are a control structure particularly suited for <em>event-driven programming</em>,
+i.e. when the program's behavior depends on events arriving asynchronously as is the case
+with, e.g., user interfaces.</p>
+<p>A state machine contains a set of <em>states</em>.
+At any one time, only one state is <em>current</em>. If the current state is <tt class="rst-docutils literal"><span class="pre">A</span></tt>, the machine is said to be in state <tt class="rst-docutils literal"><span class="pre">A</span></tt>.
+One state is the <em>initial state</em>, i.e. the current state when the machine is started.</p>
+<p>Each state may have one or more <em>transitions</em> that describe how the machine reacts to events when it is in this state.
+Each transition specifies the events it recognizes and a <em>destination state</em>.
+When an event is processed by the state machine, it checks each transition of its current state.
+The first transition that matches the event is <em>fired</em>, and its destination state becomes the current state.
+If no transition matches the event, the event is ignored.</p>
+<p>In this implementation of state machines, events that match a transition are specified by:</p>
+<blockquote>
+<ul class="rst-simple">
+<li>an <em>event type</em>, which is usually a class object, e.g., <tt class="rst-docutils literal"><span class="pre">ButtonPress</span></tt> for an event representing the user pressing the button of the mouse;</li>
+<li>optional extra arguments relative to the state of the event, e.g., <tt class="rst-docutils literal"><span class="pre">'Button1'</span></tt> to specify which button of the mouse should be pressed;</li>
+<li>an optional <em>guard</em>, which is a predicate evaluated on the event.</li>
+</ul>
+</blockquote>
+<p>States and transitions can have <em>actions</em> attached to them.
+States can have an <em>enter action</em>, called when the state becomes current,
+and a <em>leave action</em>, called when the state ceases to be current.
+Transitions have a <em>transition action</em> that is called when the transition is fired.
+In summary, if the current state is <tt class="rst-docutils literal"><span class="pre">A</span></tt> and the transition being fired has destination state <tt class="rst-docutils literal"><span class="pre">B</span></tt>,
+the following actions are called in that order:</p>
+<blockquote>
+<ul class="rst-simple">
+<li>the leave action of the current state <tt class="rst-docutils literal"><span class="pre">A</span></tt>;</li>
+<li>the transition action;</li>
+<li>the enter action of the destination state <tt class="rst-docutils literal"><span class="pre">B</span></tt>, which is now the new current state.</li>
+</ul>
+</blockquote>
+<p>State machines are traditionally represented by a graphical notation:
+states are represented by circles and transitions by directed arrows going from their starting state to their destination state.
+The initial state is usually marked with an L-shaped arrow or a thicker border.
+Transitions are typically labelled by an expression of the form</p>
+<blockquote>
+<tt class="rst-docutils literal"><span class="pre">Event(args)</span> <span class="pre">[&amp;</span> <span class="pre">guard]</span> <span class="pre">[/</span> <span class="pre">action]</span></tt></blockquote>
+<p>that specifies the event type, additional arguments, optinal guard, and optional action.</p>
+<blockquote>
+[Should include a simple example here with a drawing]</blockquote><br /><br />
+
+<!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="StateMachine.sm.Event-class.html" class="summary-name">Event</a><br />
+      Base class for events processed by state machines (see <a href="StateMachine.sm.StateMachine-class.html#process_event" class="link">StateMachine.process_event</a>).
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="StateMachine.sm.State-class.html" class="summary-name">State</a><br />
+      A state of a state machine.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="StateMachine.sm.Transition-class.html" class="summary-name">Transition</a><br />
+      A transition of a state machine.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="StateMachine.sm.StateMachine-class.html" class="summary-name">StateMachine</a><br />
+      A basic state machine (see <a href="StateMachine.decorator.statemachine-class.html" class="link">decorator.statemachine</a> for the class that supports the <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">&#64;state</span></tt> and <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">&#64;transition</span></tt> decorators).
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Exceptions</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="StateMachine.sm.StateUnknown-class.html" class="summary-name">StateUnknown</a><br />
+      Signals that a state specified by name or by id is unknown.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="StateMachine.sm.StateAlreadyExists-class.html" class="summary-name">StateAlreadyExists</a><br />
+      Signals that a state by this name already exists.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="StateMachine.sm.TransitionBadAction-class.html" class="summary-name">TransitionBadAction</a><br />
+      Signals that the action specified for a transition is not callable.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="StateMachine.sm.TransitionBadGuard-class.html" class="summary-name">TransitionBadGuard</a><br />
+      Signals that the guard specified for a transition is not callable.
+    </td>
+  </tr>
+</table>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="StateMachine-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Wed Dec  5 00:26:34 2007
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>
