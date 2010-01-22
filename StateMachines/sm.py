@@ -86,7 +86,7 @@ class Event(object):
     def __init__(self, type):
         """Initialize an event. 
         
-        :param type: The type of the event. Can be any object but normally subclasses use the event class object itself, e.g. ``ButtonPress``.
+        :param type: The type of the event. Can be any object but normally subclasses use the event class object itself, e.g. ``ButtonPress``.  NOTE:  This type is not currently used -JRE 2010-01-22
         """
         super(Event, self).__init__()
         self.type = type
@@ -164,7 +164,8 @@ class State(object):
         if it returns True and the transition has a guard, then the guard is evaluated.
         """
         for transition in self.transitions:
-            print 'trying ', transition
+            if __debug__:
+                print 'trying ', transition
             if isinstance(event, transition.event_type) and event.match(transition):
                 if callable(transition.guard):
                     if transition.guard(event):
