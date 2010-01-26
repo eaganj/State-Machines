@@ -1,4 +1,4 @@
- 
+
 """ This module tests state machines."""
 
 import unittest
@@ -108,63 +108,6 @@ class Release(Event):
 
 print 'Declaring DragSM'
 
-# class DragSM(statemachine):
-#     """A state machine for drag-and-drop"""
-#     def __init__(self):
-#         super(DragSM, self).__init__()
-#         self.foo = 10
-#     
-#     startPoint = Point(0,0)
-#     
-#     def hysteresis(self, p1, p2, delta=5):
-#         if abs(p1.x - p2.x) > delta:
-#             return True
-#         if abs(p1.y - p2.y) > delta:
-#             return True
-#         return False
-#     
-#     @state
-#     def start(self):
-#         """Start state"""
-#         
-#         def enter():
-#             print "entering Start"
-#         
-#         def leave():
-#             print "leaving Start"
-#         
-#         @transition(Press, 'Button1', to=self.wait)
-#         def action(event):
-#             self.startPoint = Point(event.x, event.y)
-#         
-#         @transition(Key, to=self.drag)
-#         def action(event):
-#             print "transition Key"
-#     
-#     @state
-#     def wait(self):
-#         @transition(Move, guard=lambda event: self.hysteresis(self.startPoint, event), to=self.drag)
-#         def action(event):
-#             pass
-#     
-#     @state
-#     def drag(self):
-#         """Drag state"""
-#         
-#         def enter():
-#             print "entering Drag"
-#         
-#         def leave():
-#             print "leaving Drag"
-#         
-#         @transition(Move)
-#         def action(event):
-#             print "dragging"
-#         
-#         @transition(Release, 'Button1', to=self.start)
-#         def action(event):
-#                 print "transition Release"
-
 class DragSM(statemachine):
     foo = 10
     startPoint = Point(0, 0)
@@ -242,25 +185,25 @@ class StaticSMTest(unittest.TestCase):
         self.assertEqual(dnd.wait, dnd.find_state(dnd.wait))
         
         dnd.process_event(Press('Button1', 10, 10))
-        self.assertEqual(dnd.current_state, dnd.wait)
+        self.assertEqual(dnd._sm_current_state, dnd.wait)
         
         dnd.process_event(Move(12, 10))
-        self.assertEqual(dnd.current_state, dnd.wait)
+        self.assertEqual(dnd._sm_current_state, dnd.wait)
         
         dnd.process_event(Move(14, 14))
-        self.assertEqual(dnd.current_state, dnd.wait)
+        self.assertEqual(dnd._sm_current_state, dnd.wait)
         
         dnd.process_event(Move(16, 14))
-        self.assertEqual(dnd.current_state, dnd.drag)
+        self.assertEqual(dnd._sm_current_state, dnd.drag)
         
         dnd.process_event(Move(20, 16))
-        self.assertEqual(dnd.current_state, dnd.drag)
+        self.assertEqual(dnd._sm_current_state, dnd.drag)
         
         dnd.process_event(Release('Button2', 16, 16))
-        self.assertEqual(dnd.current_state, dnd.drag)
+        self.assertEqual(dnd._sm_current_state, dnd.drag)
         
         dnd.process_event(Release('Button1', 16, 16))
-        self.assertEqual(dnd.current_state, dnd.start)
+        self.assertEqual(dnd._sm_current_state, dnd.start)
         print 'Done testOK'
         print
     
@@ -376,25 +319,25 @@ class DynamicSMTest(unittest.TestCase):
             ])
         
         sm.process_event(Press('Button1', 10, 10))
-        self.assertEqual(sm.current_state, sm.find_state('wait'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('wait'))
         
         sm.process_event(Move(12, 10))
-        self.assertEqual(sm.current_state, sm.find_state('wait'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('wait'))
         
         sm.process_event(Move(14, 14))
-        self.assertEqual(sm.current_state, sm.find_state('wait'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('wait'))
         
         sm.process_event(Move(16, 14))
-        self.assertEqual(sm.current_state, sm.find_state('drag'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('drag'))
         
         sm.process_event(Move(20, 16))
-        self.assertEqual(sm.current_state, sm.find_state('drag'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('drag'))
         
         sm.process_event(Release('Button2', 16, 16))
-        self.assertEqual(sm.current_state, sm.find_state('drag'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('drag'))
         
         sm.process_event(Release('Button1', 16, 16))
-        self.assertEqual(sm.current_state, sm.find_state('start'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('start'))
         
         print 'Done testDynSM'
         print
@@ -463,25 +406,25 @@ class HybridSMTest(unittest.TestCase):
             ])
         
         sm.process_event(Press('Button1', 10, 10))
-        self.assertEqual(sm.current_state, sm.find_state('wait'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('wait'))
         
         sm.process_event(Move(12, 10))
-        self.assertEqual(sm.current_state, sm.find_state('wait'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('wait'))
         
         sm.process_event(Move(14, 14))
-        self.assertEqual(sm.current_state, sm.find_state('wait'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('wait'))
         
         sm.process_event(Move(16, 14))
-        self.assertEqual(sm.current_state, sm.find_state('drag'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('drag'))
         
         sm.process_event(Move(20, 16))
-        self.assertEqual(sm.current_state, sm.find_state('drag'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('drag'))
         
         sm.process_event(Release('Button2', 16, 16))
-        self.assertEqual(sm.current_state, sm.find_state('drag'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('drag'))
         
         sm.process_event(Release('Button1', 16, 16))
-        self.assertEqual(sm.current_state, sm.find_state('start'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('start'))
         
         print 'Done testHybridSM'
         print

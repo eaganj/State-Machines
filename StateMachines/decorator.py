@@ -318,24 +318,24 @@ class statemachine(StateMachine):
                 my_state(self)
                 
                 # add it to the list of states
-                self.states.append(my_state)
+                self._sm_states.append(my_state)
                 
                 # make it the start state if needed
-                if not self.start_state or my_state.uid < start_id:
+                if not self._sm_start_state or my_state.uid < start_id:
                     start_id = my_state.uid
-                    self.start_state = my_state
+                    self._sm_start_state = my_state
         
         # now fix the destination states of the transitions so they point to the copies instead of the originals:
-        for my_state in self.states:
+        for my_state in self._sm_states:
             for transition in my_state.transitions:
                 if transition.to_state:
                     transition.to_state = self.find_state(transition.to_state)
         
         # set initial state
-        self.current_state = self.start_state
+        self._sm_current_state = self._sm_start_state
         
-        if self.active and self.call_actions_from_reset:
+        if self._sm_active and self._sm_call_actions_from_reset:
             # temporarily setting active to False allows the enter action to distinguish from normal calls
-            self.active = False
-            self.current_state.enter()
-            self.active = True
+            self._sm_active = False
+            self._sm_current_state.enter()
+            self._sm_active = True

@@ -299,20 +299,20 @@ class StateMachine(object):
         """
         super(StateMachine, self).__init__()
         
-        self.states = []
-        self.current_state = None
-        self.start_state = None
+        self._sm_states = []
+        self._sm_current_state = None
+        self._sm_start_state = None
         
-        self.active = active;
-        self.call_actions_from_reset = call_actions
-        self.call_actions_from_suspend = call_actions
-        self.call_actions_from_resume = call_actions
+        self._sm_active = active;
+        self._sm_call_actions_from_reset = call_actions
+        self._sm_call_actions_from_suspend = call_actions
+        self._sm_call_actions_from_resume = call_actions
     
     # ---- iterators to list the states of this state machine and the transitions of a state
     
     def all_states(self):
         """Return an iterator over the states of this state machine."""
-        return iter(self.states)
+        return iter(self._sm_states)
     
     def all_transitions(self):
         """Return an iterator over all the transitions of this state machine."""
@@ -384,7 +384,7 @@ class StateMachine(object):
             return self.transitions_from(dest)
         if dest:
             return self.transitions_to(src)
-        return self.all_transitions
+        return self._sm_all_transitions
     
     
     # ---- find a state by name
@@ -426,12 +426,12 @@ class StateMachine(object):
         state.state_machine = self
         
         # assign it to self.start_state if it's the first state
-        if not self.start_state:
-            self.start_state = state
-            self.current_state = state
+        if not self._sm_start_state:
+            self._sm_start_state = state
+            self._sm_current_state = state
         
         # add to self.states
-        self.states.append(state)
+        self._sm_states.append(state)
         
         # return the new state
         return state
@@ -482,15 +482,16 @@ class StateMachine(object):
         then the current state's leave action and the initial state's enter action, if any, are called.
         During these calls, the `active` variable is set to ``False`` so that the actions can distinguish these calls from a 'normal' call.
         """
-        if self.call_actions_on_reset and self.active and self.current_state != self.start_state:
+        if self._sm_call_actions_on_reset and self._sm_active \
+           and self._sm_current_state != self._sm_start_state:
             # setting active to False during the reset allows the enter/leave functions to know they are being called from reset (or suspend/resume)
-            self.active = False
-            self.current_state.leave()
-            self.current_state = self.start_state
-            self.current_state.enter()
-            self.active = True
+            self._sm_active = False
+            self._sm_current_state.leave()
+            self._sm_current_state = self._sm_start_state
+            self._sm_current_state.enter()
+            self._sm_active = True
         else:
-            self.current_state = self.start_state
+            self._sm_current_state = self._sm_start_state
     
     def suspend(self):
         """Stop processing events.
@@ -499,11 +500,11 @@ class StateMachine(object):
         then the current state's leave action, if any, is called.
         During that call, the `active` variable is set to ``False`` so that the action can distinguish this call from a 'normal' call.
         """
-        if self.call_actions_on_suspend and not self.active:
-            self.active = False
+        if self._sm_call_actions_on_suspend and not self._sm_active:
+            self._sm_active = False
             # setting active to false allows the leave function to distinguish between a regular call and a call from suspend or reset
-            self.current_state.leave()
-        self.active = False
+            self._sm_current_state.leave()
+        self._sm_active = False
     
     def resume(self):
         """Start processing events.
@@ -512,10 +513,10 @@ class StateMachine(object):
         then the current state's enter action, if any, is called.
         During that call, the `active` variable is set to ``False`` so that the action can distinguish this call from a 'normal' call.
         """
-        if self.call_actions_on_resume and not self.active:
-            self.current_state.enter()
+        if self._sm_call_actions_on_resume and not self._sm_active:
+            self._sm_current_state.enter()
             # setting active to true after the call allows the enter function to distinguish between a regular call and a call from resume or reset
-        self.active = True
+        self._sm_active = True
     
     def process_event(self, event):
         """Process an event. 
@@ -524,7 +525,7 @@ class StateMachine(object):
         :return: ``True`` if the event triggered a transition, ``False`` otherwise.
         """
         
-        if not self.active:
+        if not self._sm_active:
             return None
         
         if __debug__:
@@ -533,7 +534,7 @@ class StateMachine(object):
         
         # call the current state's 'action' function to retrieve the transition associated with this event
         # This 'action' function is actually the 'wrapper' function of the transition class.
-        transition = self.current_state.get_transition(event)
+        transition = self._sm_current_state.get_transition(event)
         
         # no transition: ignore event
         if not transition:
@@ -543,18 +544,18 @@ class StateMachine(object):
         
         # fire the transition: call the current state's leave action, the transition's action, and the destination state's enter action
         if transition.to_state:
-            if self.current_state.leave:
-                self.current_state.leave()
+            if self._sm_current_state.leave:
+                self._sm_current_state.leave()
             if callable(transition.action):
                 transition.action(event)
-            self.current_state = transition.to_state
-            if self.current_state.enter:
-                self.current_state.enter()
+            self._sm_current_state = transition.to_state
+            if self._sm_current_state.enter:
+                self._sm_current_state.enter()
         else:
             # if the destination state is not specified, simply call the transition's action
             if callable(transition.action):
                 transition.action(event)
         
         if __debug__:
-            print '-> ', self.current_state
+            print '-> ', self._sm_current_state
         return True

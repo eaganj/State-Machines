@@ -201,25 +201,25 @@ class StaticSMTest(unittest.TestCase):
         self.assertEqual(dnd.wait, dnd.find_state(dnd.wait))
         
         dnd.process_event(Press('Button1', 10, 10))
-        self.assertEqual(dnd.current_state, dnd.wait)
+        self.assertEqual(dnd._sm_current_state, dnd.wait)
         
         dnd.process_event(Move(12, 10))
-        self.assertEqual(dnd.current_state, dnd.wait)
+        self.assertEqual(dnd._sm_current_state, dnd.wait)
         
         dnd.process_event(Move(14, 14))
-        self.assertEqual(dnd.current_state, dnd.wait)
+        self.assertEqual(dnd._sm_current_state, dnd.wait)
         
         dnd.process_event(Move(16, 14))
-        self.assertEqual(dnd.current_state, dnd.drag)
+        self.assertEqual(dnd._sm_current_state, dnd.drag)
         
         dnd.process_event(Move(20, 16))
-        self.assertEqual(dnd.current_state, dnd.drag)
+        self.assertEqual(dnd._sm_current_state, dnd.drag)
         
         dnd.process_event(Release('Button2', 16, 16))
-        self.assertEqual(dnd.current_state, dnd.drag)
+        self.assertEqual(dnd._sm_current_state, dnd.drag)
         
         dnd.process_event(Release('Button1', 16, 16))
-        self.assertEqual(dnd.current_state, dnd.start)
+        self.assertEqual(dnd._sm_current_state, dnd.start)
         print 'Done testOK'
         print
     
@@ -335,25 +335,25 @@ class DynamicSMTest(unittest.TestCase):
             ])
         
         sm.process_event(Press('Button1', 10, 10))
-        self.assertEqual(sm.current_state, sm.find_state('wait'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('wait'))
         
         sm.process_event(Move(12, 10))
-        self.assertEqual(sm.current_state, sm.find_state('wait'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('wait'))
         
         sm.process_event(Move(14, 14))
-        self.assertEqual(sm.current_state, sm.find_state('wait'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('wait'))
         
         sm.process_event(Move(16, 14))
-        self.assertEqual(sm.current_state, sm.find_state('drag'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('drag'))
         
         sm.process_event(Move(20, 16))
-        self.assertEqual(sm.current_state, sm.find_state('drag'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('drag'))
         
         sm.process_event(Release('Button2', 16, 16))
-        self.assertEqual(sm.current_state, sm.find_state('drag'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('drag'))
         
         sm.process_event(Release('Button1', 16, 16))
-        self.assertEqual(sm.current_state, sm.find_state('start'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('start'))
         
         print 'Done testDynSM'
         print
@@ -422,25 +422,25 @@ class HybridSMTest(unittest.TestCase):
             ])
         
         sm.process_event(Press('Button1', 10, 10))
-        self.assertEqual(sm.current_state, sm.find_state('wait'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('wait'))
         
         sm.process_event(Move(12, 10))
-        self.assertEqual(sm.current_state, sm.find_state('wait'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('wait'))
         
         sm.process_event(Move(14, 14))
-        self.assertEqual(sm.current_state, sm.find_state('wait'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('wait'))
         
         sm.process_event(Move(16, 14))
-        self.assertEqual(sm.current_state, sm.find_state('drag'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('drag'))
         
         sm.process_event(Move(20, 16))
-        self.assertEqual(sm.current_state, sm.find_state('drag'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('drag'))
         
         sm.process_event(Release('Button2', 16, 16))
-        self.assertEqual(sm.current_state, sm.find_state('drag'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('drag'))
         
         sm.process_event(Release('Button1', 16, 16))
-        self.assertEqual(sm.current_state, sm.find_state('start'))
+        self.assertEqual(sm._sm_current_state, sm.find_state('start'))
         
         print 'Done testHybridSM'
         print
