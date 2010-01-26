@@ -321,8 +321,8 @@ class statemachine(StateMachine):
                 self.states.append(my_state)
                 
                 # make it the start state if needed
-                if not self.start_state or state.uid < start_id:
-                    start_id = state.uid
+                if not self.start_state or my_state.uid < start_id:
+                    start_id = my_state.uid
                     self.start_state = my_state
         
         # now fix the destination states of the transitions so they point to the copies instead of the originals:
