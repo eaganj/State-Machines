@@ -56,6 +56,8 @@ __docformat__ = "restructuredtext en"
 __all__ = ['StateUnknown', 'StateAlreadyExists', 'TransitionBadAction', 'TransitionBadGuard',
     'Event', 'State', 'Transition', 'StateMachine']
 
+__debugsm__ = False
+__DEBUG__ = __debug__ and __debugsm__
 
 # -------- Error classes --------
 
@@ -164,7 +166,7 @@ class State(object):
         if it returns True and the transition has a guard, then the guard is evaluated.
         """
         for transition in self.transitions:
-            if __debug__:
+            if __DEBUG__:
                 print 'trying ', transition
             if isinstance(event, transition.event_type) and event.match(transition):
                 if callable(transition.guard):
@@ -528,7 +530,7 @@ class StateMachine(object):
         if not self._sm_active:
             return None
         
-        if __debug__:
+        if __DEBUG__:
             print
             print 'Processing ', event
         
@@ -538,7 +540,7 @@ class StateMachine(object):
         
         # no transition: ignore event
         if not transition:
-            if __debug__:
+            if __DEBUG__:
                 print 'No transition for this event: ignored'
             return False
         
@@ -556,6 +558,6 @@ class StateMachine(object):
             if callable(transition.action):
                 transition.action(event)
         
-        if __debug__:
+        if __DEBUG__:
             print '-> ', self._sm_current_state
         return True
