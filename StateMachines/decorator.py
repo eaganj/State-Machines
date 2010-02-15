@@ -78,7 +78,7 @@ __docformat__ = "restructuredtext en"
 
 import sys, copy, inspect
 
-from sm import State, Transition, StateMachine
+from sm import State, Transition, StateMachine, __DEBUG__
 
 __all__ = ['TransitionDeclarationError', 'TransitionBadActionName', 'state', 'transition', 'statemachine']
 
@@ -188,7 +188,7 @@ class state(State):
         
         :param func: The function defining the state.
         """
-        if __debug__:
+        if __DEBUG__:
             print "Declaring state", func.__name__
         super(state, self).__init__(func.__name__)
         #self.__dict__ = func.__dict__  # this is a bit extreme I think...
@@ -203,7 +203,7 @@ class state(State):
         
         Calls the original state function and extracts its enter/leave actions, if any.
         """
-        if __debug__:
+        if __DEBUG__:
             print "Initializing", self
 
         # call the state function that was decorated and extract the enter/leave functions that it declares, if any.
@@ -265,7 +265,7 @@ class transition(Transition):
         
         :param func: the function being decorated, i.e. the transition action.
         """
-        if __debug__:
+        if __DEBUG__:
             print "  Declaring", self
 
         # func must be called 'action': 
