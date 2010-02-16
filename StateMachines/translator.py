@@ -1,6 +1,8 @@
 from __future__ import with_statement
 
 import os
+from os import stat
+import py_compile
 import re
 import sys
 
@@ -14,7 +16,25 @@ _transition_exp = re.compile(_transition_exp_str)
 _def_exp_str = ur'^\s*def\s+(?P<name>[-A-Za-z0-9_]+)\s*\(\s*self\s*(?P<args>.*)\)\s*:'
 _def_exp = re.compile(_def_exp_str)
 class PySMTranslator(object):
-    def translate(self, inFilename, outFilename):
+    def translate(self, smFileName, pyFileName):
+        pycFileName = pyFileName + 'c'
+        pyoFileName = pyFileName + 'o'
+        if os.path.exists(smFileName) and not (
+            (os.path.exists(pyFileName) and stat(pyFileName).st_mtime >= stat(smFileName).st_mtime)
+            or (os.path.exists(pycFileName) and stat(pycFileName).st_mtime >= stat(smFileName).st_mtime)
+            or (os.path.exists(pyoFileName) and stat(pyoFileName).st_mtime >= stat(smFileName).st_mtime)):
+            # print "Translating", inFilename, "to", outFilename
+            self._doTranslate(smFileName, pyFileName)
+            self.postProcess(smFileName, pyFileName)
+    
+    def postProcess(self, fileName, pyFileName):
+        py_compile.compile(pyFileName, dfile=fileName)
+        if (os.path.exists(pyFileName + 'c') or os.path.exists(pyFileName + 'o')) and \
+           os.path.exists(pyFileName) and os.path.exists(fileName):
+           os.unlink(pyFileName)
+           print "Unlinking", pyFileName
+           
+    def _doTranslate(self, inFilename, outFilename):
         indent = 0
         in_state = False
         state_indent = 0
@@ -138,10 +158,12 @@ class PySMMetaImporter(object):
         moduleName = fullname.rsplit('.', 1)[-1]
         for d in (path or sys.path):
             fileName = os.path.join(d, moduleName + '.pysm')
-            if os.path.exists(fileName): # TODO: check file modification times
-                print 'translating', fileName, 'to', moduleName + '.py'
+            pyFileName = os.path.join(d, moduleName + '.py')
+            if os.path.exists(fileName):
+                print 'translating', fileName, 'to', pyFileName
                 PySMTranslator().translate(fileName,
                                            os.path.join(d, moduleName + '.py'))
+                
         
         return None
 
