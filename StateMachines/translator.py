@@ -16,23 +16,24 @@ _transition_exp = re.compile(_transition_exp_str)
 _def_exp_str = ur'^\s*def\s+(?P<name>[-A-Za-z0-9_]+)\s*\(\s*self\s*(?P<args>.*)\)\s*:'
 _def_exp = re.compile(_def_exp_str)
 class PySMTranslator(object):
-    def translate(self, smFileName, pyFileName):
+    def translate(self, smFileName, pyFileName, cleanUp=True, force=False):
         pycFileName = pyFileName + 'c'
         pyoFileName = pyFileName + 'o'
-        if os.path.exists(smFileName) and not (
+        if os.path.exists(smFileName) and (force or not (
             (os.path.exists(pyFileName) and stat(pyFileName).st_mtime >= stat(smFileName).st_mtime)
             or (os.path.exists(pycFileName) and stat(pycFileName).st_mtime >= stat(smFileName).st_mtime)
-            or (os.path.exists(pyoFileName) and stat(pyoFileName).st_mtime >= stat(smFileName).st_mtime)):
+            or (os.path.exists(pyoFileName) and stat(pyoFileName).st_mtime >= stat(smFileName).st_mtime))):
             # print "Translating", inFilename, "to", outFilename
             self._doTranslate(smFileName, pyFileName)
-            self.postProcess(smFileName, pyFileName)
+            self.postProcess(smFileName, pyFileName, cleanUp=cleanUp)
     
-    def postProcess(self, fileName, pyFileName):
+    def postProcess(self, fileName, pyFileName, cleanUp=True):
         py_compile.compile(pyFileName, dfile=fileName)
         if (os.path.exists(pyFileName + 'c') or os.path.exists(pyFileName + 'o')) and \
            os.path.exists(pyFileName) and os.path.exists(fileName):
-           os.unlink(pyFileName)
-           print "Unlinking", pyFileName
+           if cleanUp:
+               os.unlink(pyFileName)
+               print "Unlinking", pyFileName
            
     def _doTranslate(self, inFilename, outFilename):
         indent = 0
@@ -101,12 +102,13 @@ class PySMTranslator(object):
                             
                             
     def _initialize(self):
-        return '''\
-from __future__ import with_statement
-
-from StateMachines import *
-
-'''
+        return ''
+#         return '''\
+# from __future__ import with_statement
+# 
+# from StateMachines import *
+# 
+# '''
         
     def _translateStateStatement(self, m, indent):
         name = m.group("name")
@@ -176,11 +178,24 @@ if __name__ == '__main__':
     import os
     translator = PySMTranslator()
     
-    if len(sys.argv) < 3:
-        outFile = os.path.splitext(sys.argv[1])[0] + '.py'
+    options = {}
+    
+    args = []
+    for arg in sys.argv:
+        if arg == '--force':
+            options['force'] = True
+        elif arg == '--noCleanUp':
+            options['cleanUp'] = False
+        elif arg.startswith('--'):
+            print "Unrecognized option:", arg
+        else:
+            args.append(arg)
+    
+    if len(args) < 3:
+        outFile = os.path.splitext(args[1])[0] + '.py'
     else:
-        outFile = sys.argv[2]
+        outFile = args[2]
         
-    print 'translate from %s to %s' % (sys.argv[1], outFile)
-    translator.translate(sys.argv[1], outFile)
+    print 'translate from %s to %s' % (args[1], outFile)
+    translator.translate(args[1], outFile, **options)
     

@@ -407,6 +407,9 @@ class StateMachine(object):
                     return s
         return None
     
+    def current_state(self):
+        return self._sm_current_state
+    
     # ---- functions to dynamically add states and transitions.
     #      (Most state machines will use the @state and @transition decorators instead)
     
