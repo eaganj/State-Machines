@@ -152,7 +152,11 @@ class PySMTranslator(object):
         args = m.group("args")
         
         # return indent + "def %s(state, %s):\n" % (name, args)
-        return indent + "def %s(%s):\n" % (name, args)
+        # return indent + "def %s(%s):\n" % (name, args)
+        decorator = ''
+        if name in ('enter', 'leave'):
+            decorator = "%s@state.%s\n" % (indent, name)
+        return "%s%sdef %s(%s):\n" % (decorator, indent, name, args)
 
 class PySMMetaImporter(object):
     def find_module(self, fullname, path=None):

@@ -5,48 +5,6 @@ import unittest
 import StateMachines
 from StateMachines import *
 
-# ----- testing the _getlocals/_getsomelocals functions --------
-
-def f():
-    b = 1
-    c = 2
-    def g():
-        return 2
-    g()
-    return b
-
-def f2():
-    b = 1
-    c = 2
-    def g():
-        raise Exception
-    g()
-    return b
-
-class LocalsTest(unittest.TestCase):
-    def testLocals(self):
-        res = StateMachines.decorator._getlocals(f)
-        # print res
-        self.assertEqual(res.get('b'), 1)
-        self.assertEqual(res.get('c'), 2)
-        self.assert_(isinstance(res.get('g'), f.__class__))
-    
-    def testSomeLocals(self):
-        res = StateMachines.decorator._getsomelocals(f, ('b', 'g'))
-        # print res
-        self.assertEqual(res.get('b'), 1)
-        self.assertEqual(res.get('c'), None)
-        self.assert_(isinstance(res.get('g'), f.__class__))
-    
-    def testException(self):
-        res = None
-        try:
-            res = StateMachines.decorator._getsomelocals(f2, ('b', 'g'))
-        except Exception:
-            pass
-        self.assertEqual(res, None)
-        
-
 # -------- utilities for the state machine examples --------
 
 class Point(object):
@@ -127,9 +85,11 @@ class DragSM(statemachine):
     def start(self):
         """Start state"""
         
+        @state.enter
         def enter():
             print "entering Start"
         
+        @state.leave
         def leave():
             print "leaving Start"
         
@@ -151,9 +111,11 @@ class DragSM(statemachine):
     def drag(self):
         """Drag state"""
         
+        @state.enter
         def enter():
             print "entering Drag"
         
+        @state.leave
         def leave():
             print "leaving Drag"
         

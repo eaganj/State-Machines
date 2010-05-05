@@ -84,69 +84,74 @@ __all__ = ['TransitionDeclarationError', 'TransitionBadActionName', 'state', 'tr
 
 # -------- utilities --------
 
-# Functions to find out the locals of a function.
-# Calls the function and uses tracing tools to find out.
-# NOTE : this is both dangerous (the function could have side effects)
-#   and expensive: tracing is costly.
-#
-# Copied from http://wiki.python.org/moin/PythonDecoratorLibrary
-# and modified by [mbl]:
-#   - use depth of original call to test that we're getting info from the right 'return'
-#   - use depth to avoid tracing nested calls (more efficient)
-#   - handle exceptions
-
-def _getsomelocals(function, keys, *args):
-    """Execute a function and return its locals whose names are in keys (private).
-    
-    :Parameters:
-        - `function`: The function from which to extract the locals.
-        - `keys`: A tuple of names of locals to extract
-        - `args`: Arguments to be passed to `function` so as to extract its locals.
-    
-    :return: The locals in `keys` with their values, as a dictionary.
-    
-    :note: Extracting the locals requires executing the function and is fairly inefficient.
-    """
-    func_locals = {'doc':function.__doc__}
-    def probeFunc(frame, event, arg):
-        if event == 'call' and len(inspect.stack()) > depth:
-            return None
-        elif event == 'return' and len(inspect.stack()) == depth:
-            locals = frame.f_locals
-            func_locals.update(dict((k,locals.get(k)) for k in keys))
-            sys.settrace(None)
-        elif event == 'exception' or event == 'c_exception':
-            sys.settrace(None)
-        return probeFunc
-    depth = len(inspect.stack())+2
-    sys.settrace(probeFunc)
-    function(*args)
-    return func_locals
-
-def _getlocals(function, *args):
-    """Execute a function and return its locals (private).
-    
-    :Parameters:
-        - `function`: The function from which to extract the locals.
-        - `args`: Arguments to be passed to `function` so as to extract its locals.
-    
-    :return: All the locals of `function` together with their values, as a dictionary.
-    
-    :note: Extracting the locals requires executing the function and is fairly inefficient.
-    """
-    func_locals = {'doc':function.__doc__}
-    def probeFunc(frame, event, arg):
-        if event == 'return' and len(inspect.stack()) == depth:
-            func_locals.update(frame.f_locals)
-            sys.settrace(None)
-        return probeFunc
-    depth = len(inspect.stack())+2
-    sys.settrace(probeFunc)
-    function(*args)
-    return func_locals
+# # Functions to find out the locals of a function.
+# # Calls the function and uses tracing tools to find out.
+# # NOTE : this is both dangerous (the function could have side effects)
+# #   and expensive: tracing is costly.
+# #
+# # Copied from http://wiki.python.org/moin/PythonDecoratorLibrary
+# # and modified by [mbl]:
+# #   - use depth of original call to test that we're getting info from the right 'return'
+# #   - use depth to avoid tracing nested calls (more efficient)
+# #   - handle exceptions
+# 
+# def _getsomelocals(function, keys, *args):
+#     """Execute a function and return its locals whose names are in keys (private).
+#     
+#     :Parameters:
+#         - `function`: The function from which to extract the locals.
+#         - `keys`: A tuple of names of locals to extract
+#         - `args`: Arguments to be passed to `function` so as to extract its locals.
+#     
+#     :return: The locals in `keys` with their values, as a dictionary.
+#     
+#     :note: Extracting the locals requires executing the function and is fairly inefficient.
+#     """
+#     func_locals = {'doc':function.__doc__}
+#     def probeFunc(frame, event, arg):
+#         if event == 'call' and len(inspect.stack()) > depth:
+#             return None
+#         elif event == 'return' and len(inspect.stack()) == depth:
+#             locals = frame.f_locals
+#             func_locals.update(dict((k,locals.get(k)) for k in keys))
+#             sys.settrace(None)
+#         elif event == 'exception' or event == 'c_exception':
+#             sys.settrace(None)
+#         return probeFunc
+#     depth = len(inspect.stack())+2
+#     sys.settrace(probeFunc)
+#     function(*args)
+#     return func_locals
+# 
+# def _getlocals(function, *args):
+#     """Execute a function and return its locals (private).
+#     
+#     :Parameters:
+#         - `function`: The function from which to extract the locals.
+#         - `args`: Arguments to be passed to `function` so as to extract its locals.
+#     
+#     :return: All the locals of `function` together with their values, as a dictionary.
+#     
+#     :note: Extracting the locals requires executing the function and is fairly inefficient.
+#     """
+#     func_locals = {'doc':function.__doc__}
+#     def probeFunc(frame, event, arg):
+#         if event == 'return' and len(inspect.stack()) == depth:
+#             func_locals.update(frame.f_locals)
+#             sys.settrace(None)
+#         return probeFunc
+#     depth = len(inspect.stack())+2
+#     sys.settrace(probeFunc)
+#     function(*args)
+#     return func_locals
 
 # -------- Error classes --------
 
+class EnterLeaveDeclarationError(Exception):
+    """ Signals that the ``@state.enter`` or ``@state.leave`` decorator 
+        must be used with a state declaration.
+    """
+    
 class TransitionDeclarationError(Exception):
     """Signals that the ``@transition`` decorator must be used within a state declaration."""
 
@@ -206,17 +211,36 @@ class state(State):
         if __DEBUG__:
             print "Initializing", self
 
-        # call the state function that was decorated and extract the enter/leave functions that it declares, if any.
-        func_locals = _getsomelocals(self.func, ('enter', 'leave'), state_machine)
+        # Call the state function that was decorated.  This will execute its body, including any
+        # enter/leave/transition decorators contained therein.  These decorators will register their
+        # functions with this calling state instance (self).
+        self.func(state_machine)
+        
+    
+    @classmethod
+    def _add_enter_or_leave(cls, f, kind):
+        # Inspect the call stack to find our embedding state.
+        # We're supposed to be called by the state decorator function, which is a lambda around us.
+        # This is why we go up 3 levels in the call stack to find the state we belong to.
+        locals = sys._getframe(3).f_locals
+        my_state = None
+        if locals:
+            my_state = locals.get('self')
+        if not locals or not my_state or not isinstance(my_state, state):
+            raise EnterLeaveDeclarationError("state.%s must be used within a state" % (kind))
 
-        self.enter = func_locals.get('enter')
-        if self.enter and not callable(self.enter):
-            self.enter = None
-
-        self.leave = func_locals.get('leave')
-        if self.leave and not callable(self.leave):
-            self.leave = None
-
+        # import jre.debug
+        # jre.debug.interact()
+        if not callable(f):
+            setattr(my_state, kind, None)
+        else:
+            setattr(my_state, kind, f)
+        
+        return f
+    
+    enter = classmethod(lambda cls, f: cls._add_enter_or_leave(f, 'enter'))
+    leave = classmethod(lambda cls, f: cls._add_enter_or_leave(f, 'leave'))
+    
 class transition(Transition):
     """This decorator class is used to declare the transitions of a state machine.
     
@@ -274,9 +298,9 @@ class transition(Transition):
 
         self.action = func
 
-        # we're supposed to be called by the state decorator function, which calls '_getsomelocals'
-        # This is why we go up 3 levels in the call stack to find the state we belong to.
-        locals = sys._getframe(3).f_locals
+        # we're supposed to be called by the state decorator function.
+        # This is why we go up 2 levels in the call stack to find the state we belong to.
+        locals = sys._getframe(2).f_locals
         my_state = None
         if locals:
             my_state = locals.get('self')
