@@ -307,6 +307,7 @@ class transition(Transition):
         if not locals or not my_state or not isinstance(my_state, state):
             raise TransitionDeclarationError, "A transition must be declared within a state"
         my_state.transitions.append(self)
+        self.state = my_state
 
         return func
 
