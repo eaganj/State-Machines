@@ -1,9 +1,11 @@
-Scotty — Runtime Toolkit Overloading
-====================================
+Python State Machines
+=====================
 
-The Scotty meta-toolkit.  Scotty is a toolkit designed to support runtime toolkit overloading.  For more details, see the [UIST 2011 article][uist11].
+A python state machines library inspired by the [Java Swing States][appert06] library.
 
-[uist11]: http://dx.doi.org/10.1145/2047196.2047226
+Offers two standard syntaxes for creating state machines: a pure-python syntax using decorators and an altered python syntax with two new keywords: State and Transition.  *(TODO: document these.  In the mean time, see the smTest.py and pysmTest.py files.)*
+
+[appert06]: http://dx.doi.org/10.1145/1166253.1166302
 
 License
 =======
