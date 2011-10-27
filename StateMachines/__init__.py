@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Python State Machines
 #
 # Copyright 2007-2011, Université Paris-Sud
